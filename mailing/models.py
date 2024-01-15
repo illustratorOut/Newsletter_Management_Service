@@ -1,3 +1,4 @@
+import colorama
 from django.db import models
 
 STATUS_CHOICES = (
@@ -32,9 +33,13 @@ class Mailing(models.Model):
     frequency = models.CharField(choices=FREQUENCY_CHOICES, default='1',
                                  verbose_name='Периодичность: раз в день, раз в неделю, раз в месяц')
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Создана', verbose_name='Статус рассылки')
+    сlient = models.ManyToManyField(Client, verbose_name='Пользователь')
 
     def __str__(self):
-        return f'{self.status} - {self.time_mailing}'
+        return (
+            f'{colorama.Fore.LIGHTYELLOW_EX + self.status + colorama.Fore.RESET}- '
+            f'{colorama.Fore.GREEN + self.end_datatime_mailing.strftime("%d-%m-%Y %H:%M") + colorama.Fore.RESET} / '
+            f'{colorama.Fore.MAGENTA + self.time_mailing.strftime("%H:%M") + colorama.Fore.RESET}')
 
     class Meta:
         verbose_name = 'Рассылка'
