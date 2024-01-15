@@ -1,0 +1,83 @@
+{% extends 'mailing/base.html' %}}
+
+
+{% block content%}
+
+
+<div class="container py-3">
+    <div class="row row-cols-1 row-cols-md-4 mb-3 text-center">
+        {% for object in object_list %}
+        <div class="col mb-4 box-shadow rounded-3">
+
+            <div class="card h-100 ">
+
+                <div class="card-header py-3 ">
+                    <h4 class="my-0 font-weight-normal">
+                        <div class="circle circle-lg ">
+
+                            Пользователь
+
+                        </div>
+                    </h4>
+                </div>
+
+                <div class="card-body">
+                    <div class="card-body-header">
+                        <h1 class="card-title pricing-card-title">{{object.status}}</h1>
+                    </div>
+
+                    <div class="card-body-body ">
+                        <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                            <li>Периодичность: {{object.frequency}}</li>
+
+
+                        </ul>
+                    </div>
+
+                    <div class="col align-self-end">
+                        <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                            <hr>
+                            {% for version in item.version_set.all %}
+                            {% if version.flag_current_version %}
+                            <li>- Актуальная версия: <b>sdfsedfsd</b>
+                                {% endif %}
+                                {% endfor %}
+                            </li>
+                            <li>- Какой-то текст ыы.</li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="col-auto py-3">
+                    <a href="#"
+                       class="btn btn-outline-primary btn-sm">Просмотр</a>
+
+
+                    {% if item.owner == request.user %}
+                    <a href="#"
+                       class="{% url 'mailing:update' object.pk %}">Изменить</a>
+                    {% elif perms.catalog.set_is_published %}
+                    <a href="{% url 'mailing:update' object.pk %}"
+                       class="btn btn-outline-secondary btn-sm">Изменить</a>
+                    {% endif %}
+
+                    {% if perms.catalog.delete_product %}
+                    <a href="{% url 'mailing:delete' object.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>
+                    {% endif %}
+                </div>
+
+
+                <div class="card-footer">
+                    <small class="text-muted">{{object.time_mailing}}</small>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}
+
