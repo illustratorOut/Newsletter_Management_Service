@@ -3,7 +3,7 @@ import datetime
 from django import forms
 from django.forms import widgets
 
-from mailing.models import Mailing, MessageMailing
+from mailing.models import Mailing, MessageMailing, Client
 
 
 class StyleFormMixin:
@@ -16,8 +16,8 @@ class StyleFormMixin:
 class MailingForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Mailing
-        # fields = '__all__'
-        exclude = ('сlient',)
+        fields = '__all__'
+        # exclude = ('сlient',)
         widgets = {
             'time_mailing': forms.DateInput(
                 attrs={'type': 'time',
@@ -34,4 +34,10 @@ class MailingForm(StyleFormMixin, forms.ModelForm):
 class MessageMailingForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = MessageMailing
+        fields = '__all__'
+
+
+class ClientForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = Client
         fields = '__all__'

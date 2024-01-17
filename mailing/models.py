@@ -33,7 +33,8 @@ class Mailing(models.Model):
     frequency = models.CharField(choices=FREQUENCY_CHOICES, default='1',
                                  verbose_name='Периодичность: раз в день, раз в неделю, раз в месяц')
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Создана', verbose_name='Статус рассылки')
-    сlient = models.ManyToManyField(Client, verbose_name='Пользователь')
+    # сlient = models.ManyToManyField(Client, verbose_name='Пользователь')
+    сlient = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name='Пользователь')
 
     def __str__(self):
         return (
