@@ -77,27 +77,35 @@
             </div>
 
 
-            <form action="/client_form" name="client_form" method="post" enctype="multipart/form-data">
+            <form action="/client_form" name="client_form" method="post" class="was-validated"
+                  enctype="multipart/form-data">
                 <div class="modal-body">
                     {% csrf_token %}
 
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Адресс почты:</label>
+                        <label for="exampleFormControlInput1" class="form-label">Адресс почты:</label>'
+
                         <input name="email" type="email" class="form-control" id="exampleFormControlInput1"
-                               placeholder="name@mail.ru">
+                               placeholder="name@mail.ru" required>
+                        <div class="invalid-tooltip position-relative">
+                            Пожалуйста, введите электронную почту!
+                        </div>
                     </div>
+
                     <div class="mb-3">
                         <label for="exampleFormControlInput2" class="form-label">Полное имя:</label>
-                        <input name="full_name" type="text" class="form-control" id="exampleFormControlInput2"
-                               placeholder="Вася">
+                        <input name="full_name" type="text" class="form-control" id="exampleFormControlInput2" placeholder="Василий"
+                               required>
+                        <div class="invalid-tooltip position-relative">
+                            Пожалуйста, введите свое имя.
+                        </div>
                     </div>
+
 
                     <div class="form-outline" data-mdb-input-init>
                         <label class="form-label" for="textAreaExample">Комментарий:</label>
                         <textarea name="comment" class="form-control" id="textAreaExample" rows="4"></textarea>
                     </div>
-
-
 
 
                 </div>

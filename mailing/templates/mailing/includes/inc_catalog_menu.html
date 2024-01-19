@@ -40,7 +40,7 @@
                             <li><a class="dropdown-item" href="#">Выйти</a></li>
                         </ul>
                         {% else %}
-                        <a class="p-2 btn btn-outline-primary" href="#">Войти</a>
+                        <a class="p-2 btn btn-outline-primary" href="{% url 'users:login'%}">Войти</a>
                         <a class="p-2 btn btn-outline-primary" href="#">Регистрация</a>
                         {% endif %}
 

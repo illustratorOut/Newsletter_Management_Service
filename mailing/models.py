@@ -39,7 +39,6 @@ class Mailing(models.Model):
     сlient_key = models.ManyToManyField(Client, verbose_name='Пользователь')
 
     def __str__(self):
-
         return (
             f'{colorama.Fore.LIGHTYELLOW_EX + self.status + colorama.Fore.RESET} - '
             f'{colorama.Fore.GREEN + self.end_datatime_mailing.strftime("%d-%m-%Y %H:%M") + colorama.Fore.RESET} / '
@@ -53,7 +52,7 @@ class Mailing(models.Model):
 class MessageMailing(models.Model):
     topic = models.CharField(max_length=100, verbose_name='Тема письма')
     body = models.TextField(verbose_name='Тело письма')
-    mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name='Рассылки', blank=True, null=True, )
+    mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name='Рассылки')
 
     def __str__(self):
         return f'Тема:{self.topic} - {self.body}'
