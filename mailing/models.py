@@ -39,6 +39,7 @@ class Mailing(models.Model):
     сlient_key = models.ManyToManyField(Client, verbose_name='Пользователь')
 
     def __str__(self):
+
         return (
             f'{colorama.Fore.LIGHTYELLOW_EX + self.status + colorama.Fore.RESET} - '
             f'{colorama.Fore.GREEN + self.end_datatime_mailing.strftime("%d-%m-%Y %H:%M") + colorama.Fore.RESET} / '
