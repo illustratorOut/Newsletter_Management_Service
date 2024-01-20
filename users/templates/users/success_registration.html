@@ -1,0 +1,19 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header text-center">
+                <h1>Верификацию </h1>
+            </div>
+            <div class="card-body alert alert-success" class="" role="alert">
+                <H5>Регистрация завершена, аккаунт активирован! Для продолжения перейдите по <a href="{% url 'users:login' %}">ссылке</a></H5>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -85,3 +85,8 @@ def client_form(request):
         Client.objects.create(email=email, full_name=full_name, comment=comment)
 
     return HttpResponseRedirect(reverse('mailing:create'))
+
+
+class HomeListView(ListView):
+    model = Mailing
+    template_name = 'mailing/home.html'

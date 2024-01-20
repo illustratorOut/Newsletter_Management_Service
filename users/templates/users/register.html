@@ -9,19 +9,19 @@
                 <div class="card">
                     <div class="card-header">
                         <h2 class="card-title">
-                            Вход
+                            Регистрация
                         </h2>
                     </div>
                     <div class="card-body">
                         {% csrf_token %}
                         {{ form.as_p }}
-
-                        <button type="submit" class="btn btn-primary">Войти</button>
-                        <a class="p-2 " href="#">Забыли пароль?</a>
+                        <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
                     </div>
                     <div class="card-footer"></div>
                 </div>
             </div>
+
+
         </div>
     </form>
 </div>

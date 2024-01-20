@@ -6,6 +6,62 @@
 
 <div class="container py-3">
     <div class="row row-cols-1 row-cols-md-4 mb-3 text-center">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Day</th>
+                <th scope="col">Article Name</th>
+                <th scope="col">Author</th>
+                <th scope="col">Words</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Bootstrap 4 CDN and Starter Template</td>
+                <td>Cristina</td>
+                <td>913</td>
+                <td><img src="{{}}" alt=""></td>
+                <td class="py-2">
+                    <button type="button" class="btn btn-sm btn-primary"><i class="far fa-eye"></i></button>
+                    <button type="button" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Bootstrap Grid 4 Tutorial and Examples</td>
+                <td>Cristina</td>
+                <td>1.434</td>
+                <td>3.417</td>
+                <td class="py-2">
+                    <button type="button" class="btn btn-sm btn-primary"><i class="far fa-eye"></i></button>
+                    <button type="button" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td>Bootstrap Flexbox Tutorial and Examples</td>
+                <td>Cristina</td>
+                <td>1.877</td>
+                <td>1.234</td>
+                <td class="py-2">
+                    <button type="button" class="btn btn-sm btn-primary"><i class="far fa-eye"></i></button>
+                    <button type="button" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="container py-3">
+    <div class="row row-cols-1 row-cols-md-4 mb-3 text-center">
         {% for object in object_list %}
         <div class="col mb-4 box-shadow rounded-3">
 
@@ -24,12 +80,35 @@
                 <div class="card-body">
                     <div class="card-body-header">
                         <h1 class="card-title pricing-card-title">{{object.status}}</h1>
+
+
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-success"><i class="fa fa-briefcase"
+                                                                                   style="font-size:20px;"></i>
+                                Company:
+                            </li>
+                            <li class="list-group-item list-group-item-success"><i class="fa fa-user"
+                                                                                   style="font-size:20px;"></i> Role
+                            </li>
+                            <li class="list-group-item list-group-item-success"><i class="fa fa-map-marker"
+                                                                                   style="font-size:20px;"></i>
+                                Location
+                            </li>
+                            <li class="list-group-item list-group-item-success"><i class="fa fa-clock-o"
+                                                                                   style="font-size:20px;"></i>
+                                Duration
+                            </li>
+                            <li class="list-group-item list-group-item-success"><i class="fa fa-inr"
+                                                                                   style="font-size:20px;"></i> Cost
+                            </li>
+                        </ul>
+
+
                     </div>
 
                     <div class="card-body-body ">
-                        <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                            <li>Периодичность: {{object.frequency}}</li>
-                        </ul>
+
+
                     </div>
                 </div>
 
@@ -60,9 +139,8 @@
         </div>
 
         {% endfor %}
+
     </div>
 </div>
-
-
 {% endblock %}
 
