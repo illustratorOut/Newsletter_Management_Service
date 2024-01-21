@@ -20,15 +20,17 @@ class MailingForm(StyleFormMixin, forms.ModelForm):
         # exclude = ('сlient',)
 
         widgets = {
-            'time_mailing': forms.DateInput(
+            'time_mailing': forms.TimeInput(
                 attrs={'type': 'time',
                        # 'min': datetime.datetime.today().strftime('%H:%M'),
                        'value': datetime.datetime.today().strftime('%H:%M')}),
-            'end_datatime_mailing': forms.DateTimeInput(
+
+            'end_datatime_mailing': forms.DateInput(
+                format='%Y-%m-%d %H:%M',
                 attrs={'type': 'datetime-local',
                        'min': f'{datetime.datetime.today().strftime("%Y-%m-%d")}T{datetime.datetime.today().strftime("%H:%M")}',
                        'value': f'{datetime.datetime.today().strftime("%Y-%m-%d")}T{datetime.datetime.today().strftime("%H:%M")}'
-                       })
+                       }),
 
         }
 

@@ -30,7 +30,7 @@ class Client(models.Model):
 
 class Mailing(models.Model):
     time_mailing = models.TimeField(verbose_name='Время рассылки')
-    end_datatime_mailing = models.DateTimeField(blank=True, null=True, verbose_name='Дата и время окончания рассылки')
+    end_datatime_mailing = models.DateTimeField(verbose_name='Дата и время окончания рассылки')
     frequency = models.CharField(choices=FREQUENCY_CHOICES, default='1',
                                  verbose_name='Периодичность: раз в день, раз в неделю, раз в месяц')
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Создана', verbose_name='Статус рассылки')

@@ -1,5 +1,5 @@
 {% extends 'mailing/base.html' %}}
-
+{% load static%}
 
 {% block content%}
 
@@ -7,6 +7,63 @@
 <div class="container py-3">
     <div class="row row-cols-1 row-cols-md-4 mb-3 text-center">
         <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col">
+                    <div class="watch">
+                        <script type="text/javascript"
+                                src="https://bootstraptema.ru/plugins/2015/x-tag/x-tag-core.min.js"></script>
+                        <style>
+                            x-clock {
+                            color: rgb(0, 0, 0);
+                            font-size:40px;
+                            text-shadow: rgb(204, 204, 204) 0px 1px 0px, rgb(201, 201, 201) 0px 2px 0px, rgb(187, 187, 187) 0px 3px 0px, rgb(185, 185, 185) 0px 4px 0px, rgb(170, 170, 170) 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 6px 1px, rgba(0, 0, 0, 0.1) 0px 0px 5px, rgba(0, 0, 0, 0.3) 0px 1px 3px, rgba(0, 0, 0, 0.15) 0px 3px 5px, rgba(0, 0, 0, 0.2) 0px 5px 10px, rgba(0, 0, 0, 0.2) 0px 10px 10px, rgba(0, 0, 0, 0.1) 0px 20px 20px;
+                            }
+                        </style>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-6 col-lg-offset-3">
+                                    <div class="text-center">
+                                        <x-clock></x-clock>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            xtag.register('x-clock', {
+                             lifecycle: {
+                             created: function(){
+                             this.start();
+                             }
+                             },
+                             methods: {
+                             start: function(){
+                             this.update();
+                             this.xtag.interval = setInterval(this.update.bind(this), 1000);
+                             },
+                             stop: function(){
+                             this.xtag.interval = clearInterval(this.xtag.interval);
+                             },
+                             update: function(){
+                             this.textContent = new Date().toLocaleTimeString();
+                             }
+                             },
+                             events: {
+                             tap: function(){
+                             if (this.xtag.interval) this.stop();
+                             else this.start();
+                             }
+                             }
+                            });
+                        </script>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+
             <thead>
             <tr>
                 <th scope="col">#</th>
@@ -30,11 +87,20 @@
                     {{object}} <br>
                     {% endfor%}
                 </td>
-                <td><img src="/media/status_active.png"></td>
+
+                <td style="width:100px">
+                    {% if object.status == 'Создана' %}
+                    <img src="/media/status_active.png" style="max-width: 30%; height: auto;">
+                    {% elif object.status == 'Запущена'%}
+                    <img src="/media/status_work.png" style="max-width: 30%; height: auto;">
+                    {% elif object.status == 'Завершена'%}
+                    <img src="/media/status_inactive.png" style="max-width: 30%; height: auto;">
+                    {% endif %}
+                </td>
+
                 <td class="py-2">
-                    <button type="button" class="btn btn-sm btn-primary"><i class="far fa-eye"></i></button>
-                    <button type="button" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></button>
-                    <button type="button" class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button>
+                    <a href="{% url 'mailing:update' object.pk %}" class="btn btn-outline-secondary btn-sm">Изменить</a>
+                    <a href="{% url 'mailing:delete' object.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>
                 </td>
             </tr>
             {% endfor %}
@@ -44,87 +110,90 @@
 </div>
 
 
-<div class="container py-3">
-    <div class="row row-cols-1 row-cols-md-4 mb-3 text-center">
-        {% for object in object_list %}
-        <div class="col mb-4 box-shadow rounded-3">
+<!--<div class="container py-3">-->
+<!--    <div class="row row-cols-1 row-cols-md-4 mb-3 text-center">-->
+<!--        {% for object in object_list %}-->
+<!--        <div class="col mb-4 box-shadow rounded-3">-->
 
-            <div class="card h-100 ">
+<!--            <div class="card h-100 ">-->
 
-                <div class="card-header py-3 ">
-                    <h4 class="my-0 font-weight-normal">
-                        <div class="circle circle-lg ">
+<!--                <div class="card-header py-3 ">-->
+<!--                    <h4 class="my-0 font-weight-normal">-->
+<!--                        <div class="circle circle-lg ">-->
 
-                            Пользователь
+<!--                            Пользователь-->
 
-                        </div>
-                    </h4>
-                </div>
+<!--                        </div>-->
+<!--                    </h4>-->
+<!--                </div>-->
 
-                <div class="card-body">
-                    <div class="card-body-header">
-                        <h1 class="card-title pricing-card-title">{{object.status}}</h1>
-
-
-                        <ul class="list-group">
-                            <li class="list-group-item list-group-item-success"><i class="fa fa-briefcase"
-                                                                                   style="font-size:20px;"></i>
-                                Company:
-                            </li>
-                            <li class="list-group-item list-group-item-success"><i class="fa fa-user"
-                                                                                   style="font-size:20px;"></i> Role
-                            </li>
-                            <li class="list-group-item list-group-item-success"><i class="fa fa-map-marker"
-                                                                                   style="font-size:20px;"></i>
-                                Location
-                            </li>
-                            <li class="list-group-item list-group-item-success"><i class="fa fa-clock-o"
-                                                                                   style="font-size:20px;"></i>
-                                Duration
-                            </li>
-                            <li class="list-group-item list-group-item-success"><i class="fa fa-inr"
-                                                                                   style="font-size:20px;"></i> Cost
-                            </li>
-                        </ul>
+<!--                <div class="card-body">-->
+<!--                    <div class="card-body-header">-->
+<!--                        <h1 class="card-title pricing-card-title">{{object.status}}</h1>-->
 
 
-                    </div>
-
-                    <div class="card-body-body ">
-
-
-                    </div>
-                </div>
-
-
-                <div class="col-auto py-3">
-                    <a href="#"
-                       class="btn btn-outline-primary btn-sm">Просмотр</a>
-
-
-                    {% if item.owner == request.user %}
-                    <a href="#"
-                       class="{% url 'mailing:update' object.pk %}">Изменить</a>
-                    {% elif perms.catalog.set_is_published %}
-                    <a href="{% url 'mailing:update' object.pk %}"
-                       class="btn btn-outline-secondary btn-sm">Изменить</a>
-                    {% endif %}
-
-                    {% if perms.catalog.delete_product %}
-                    <a href="{% url 'mailing:delete' object.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>
-                    {% endif %}
-                </div>
+<!--                        <ul class="list-group">-->
+<!--                            <li class="list-group-item list-group-item-success"><i class="fa fa-briefcase"-->
+<!--                                                                                   style="font-size:20px;"></i>-->
+<!--                                Company:-->
+<!--                            </li>-->
+<!--                            <li class="list-group-item list-group-item-success"><i class="fa fa-user"-->
+<!--                                                                                   style="font-size:20px;"></i> Role-->
+<!--                            </li>-->
+<!--                            <li class="list-group-item list-group-item-success"><i class="fa fa-map-marker"-->
+<!--                                                                                   style="font-size:20px;"></i>-->
+<!--                                Location-->
+<!--                            </li>-->
+<!--                            <li class="list-group-item list-group-item-success"><i class="fa fa-clock-o"-->
+<!--                                                                                   style="font-size:20px;"></i>-->
+<!--                                Duration-->
+<!--                            </li>-->
+<!--                            <li class="list-group-item list-group-item-success"><i class="fa fa-inr"-->
+<!--                                                                                   style="font-size:20px;"></i> Cost-->
+<!--                            </li>-->
+<!--                        </ul>-->
 
 
-                <div class="card-footer">
-                    <small class="text-muted">{{object.time_mailing}}</small>
-                </div>
-            </div>
-        </div>
+<!--                    </div>-->
 
-        {% endfor %}
+<!--                    <div class="card-body-body ">-->
 
-    </div>
-</div>
+
+<!--                    </div>-->
+<!--                </div>-->
+
+
+<!--                <div class="col-auto py-3">-->
+<!--                    <a href="#"-->
+<!--                       class="btn btn-outline-primary btn-sm">Просмотр</a>-->
+<!--                    -->
+
+
+<!--                    {% if item.owner == request.user %}-->
+<!--                    <a href="#"-->
+<!--                       class="{% url 'mailing:update' object.pk %}">Изменить</a>-->
+<!--                    {% elif perms.catalog.set_is_published %}-->
+<!--                    <a href="{% url 'mailing:update' object.pk %}"-->
+<!--                       class="btn btn-outline-secondary btn-sm">Изменить</a>-->
+<!--                    {% endif %}-->
+
+<!--                    {% if perms.catalog.delete_product %}-->
+<!--                    <a href="{% url 'mailing:delete' object.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>-->
+<!--                    {% endif %}-->
+<!--                </div>-->
+
+
+<!--                <div class="card-footer">-->
+<!--                    <small class="text-muted">{{object.time_mailing}}</small>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        {% endfor %}-->
+
+<!--    </div>-->
+<!--</div>-->
+
+
 {% endblock %}
 

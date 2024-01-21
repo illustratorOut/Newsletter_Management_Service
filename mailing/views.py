@@ -1,3 +1,6 @@
+import datetime
+
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory, formset_factory, modelformset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -8,7 +11,7 @@ from mailing.forms import MailingForm, MessageMailingForm, ClientForm
 from mailing.models import Mailing, MessageMailing, Client, LogsMailing
 
 
-class MailingCreateView(CreateView):
+class MailingCreateView(LoginRequiredMixin, CreateView):
     """Класс создания рассылки"""
     model = Mailing
     form_class = MailingForm
@@ -37,20 +40,25 @@ class MailingCreateView(CreateView):
         self.object = form.save()
         if formset.is_valid():
             formset.instance = self.object
-            formset.save(commit=False)
+            formset.save()
         return super().form_valid(form)
 
 
-class MailingListView(ListView):
+class MailingListView(LoginRequiredMixin, ListView):
     """Класс отображения рассылок"""
     model = Mailing
 
 
-class MailingUpdateView(UpdateView):
+class MailingUpdateView(LoginRequiredMixin, UpdateView):
     """Класс редактирования рассылок"""
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy('mailing:mailing_list')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+
+        return form
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -68,10 +76,12 @@ class MailingUpdateView(UpdateView):
         if formset.is_valid():
             formset.instance = self.object
             formset.save()
+        else:
+            return self.form_invalid(form)
         return super().form_valid(form)
 
 
-class MailingDeleteView(DeleteView):
+class MailingDeleteView(LoginRequiredMixin, DeleteView):
     """Класс удаления рассылок"""
     model = Mailing
     success_url = reverse_lazy('mailing:mailing_list')

@@ -8,7 +8,11 @@
 
             <form method="post">
                 {% csrf_token %}
-                <H1>Вы хотите удалить "{{object.name}}" ?</H1>
+                <H1>Вы хотите удалить рассылку?</H1>
+                {% for object in object.сlient_key.all %}
+                <H2>Почта: {{object}}</H2>
+                {% endfor %}
+                <H2>"{{object.end_datatime_mailing}}"</H2>
                 <br>
                 <button class="btn btn-outline-danger">Удалить</button>
                 <a class="btn btn-outline-warning" href="{% url 'mailing:mailing_list' %}">Отмена</a>
