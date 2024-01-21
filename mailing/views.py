@@ -2,13 +2,14 @@ import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory, formset_factory, modelformset_factory
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponseRedirect, Http404
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from mailing.forms import MailingForm, MessageMailingForm, ClientForm
 from mailing.models import Mailing, MessageMailing, Client, LogsMailing
+from users.models import User
 
 
 class MailingCreateView(LoginRequiredMixin, CreateView):
@@ -36,6 +37,10 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
         return context_data
 
     def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+
         formset = self.get_context_data()['formset']
         self.object = form.save()
         if formset.is_valid():
@@ -55,10 +60,12 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
     form_class = MailingForm
     success_url = reverse_lazy('mailing:mailing_list')
 
-    def get_form(self, form_class=None):
-        form = super().get_form(form_class)
-
-        return form
+    def get_object(self, queryset=None):
+        '''Проверка на то что бы пользователь не мог редактировать чужие данные'''
+        self.object = super().get_object(queryset)
+        if self.object.owner != self.request.user:
+            raise Http404
+        return self.object
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)

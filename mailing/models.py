@@ -1,6 +1,9 @@
 import colorama
+from django.conf import settings
 from django.db import models
 from django.views import generic
+
+NULLABLE = {'null': True, 'blank': True}
 
 STATUS_CHOICES = (
     ('Завершена', 'Завершена'),
@@ -34,9 +37,8 @@ class Mailing(models.Model):
     frequency = models.CharField(choices=FREQUENCY_CHOICES, default='1',
                                  verbose_name='Периодичность: раз в день, раз в неделю, раз в месяц')
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='Создана', verbose_name='Статус рассылки')
-    # сlient_key = models.ForeignKey(Client, on_delete=models.CASCADE, unique=True, verbose_name='Пользователь',
-    #                                null=True, blank=True)
     сlient_key = models.ManyToManyField(Client, verbose_name='Пользователь', related_name='client')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='Владелец')
 
     def __str__(self):
         return (
@@ -55,7 +57,7 @@ class MessageMailing(models.Model):
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name='Рассылки')
 
     def __str__(self):
-        return f'Тема:{self.topic} - {self.body}'
+        return f'Тема: {self.topic} - Сообщение: {self.body}'
 
     class Meta:
         verbose_name = 'Сообщение для рассылки'
