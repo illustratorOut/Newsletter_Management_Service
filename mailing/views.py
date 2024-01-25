@@ -1,12 +1,14 @@
 import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.forms import inlineformset_factory, formset_factory, modelformset_factory
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
+from blog.models import Blog
 from mailing.forms import MailingForm, MessageMailingForm, ClientForm
 from mailing.models import Mailing, MessageMailing, Client, LogsMailing
 from users.models import User
@@ -29,7 +31,6 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
         context_data = super().get_context_data(**kwargs)
         MailingFormset = inlineformset_factory(Mailing, MessageMailing, form=MessageMailingForm, extra=1,
                                                can_delete=False)
-
         if self.request.method == 'POST':
             context_data['formset'] = MailingFormset(self.request.POST, instance=self.object)
         else:
@@ -104,11 +105,15 @@ def client_form(request):
     return HttpResponseRedirect(reverse('mailing:create'))
 
 
-class HomeListView(ListView):
+class HomeListView(LoginRequiredMixin, ListView):
     model = Mailing
     template_name = 'mailing/home.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
         context['title'] = 'Online-MAILING - это отличный вариант отправки рассылок, который вы бы хотели'
+        context['qty_mailing'] = Mailing.objects.filter(owner=self.request.user).count
+        context['qty_client'] = Client.objects.all().count
+        context['activ_mailing'] = Mailing.objects.filter(Q(status='Создана') | Q(status='Запущена')).count
+        context['photo_blog'] = Blog.objects.all()[:3]
         return context
