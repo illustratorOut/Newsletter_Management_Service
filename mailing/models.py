@@ -79,7 +79,7 @@ class LogsMailing(models.Model, Truncate):
     status = models.CharField(max_length=100, verbose_name='Статус попытки')
     mail_response = models.TextField(max_length=100, verbose_name='Ответ почтового сервера')
 
-    # mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name='Рассылка')
+    mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name='Рассылка')
 
     def __str__(self):
         return f'Тема:{self.status} - {self.date}'

@@ -10,10 +10,22 @@ class Command(BaseCommand):
         Client.truncate()
         Mailing.truncate()
         MessageMailing.truncate()
+
         if User.objects.filter(email='bmgula55@mail.ru'):
-            user = User.objects.filter(email='bmgula55@mail.ru')
+            user = User.objects.filter(email='bmgula55@mail.ru')[0]
         else:
-            user = User.objects.create(email='bmgula55@mail.ru', is_active=True)
+            user = User.objects.create(
+                email='bmgula55@mail.ru',
+                first_name='Admin',
+                last_name='Adminov',
+                # is_superuser=True,
+                # is_staff=True,
+                is_active=True,
+                password='1234S5678'
+            )
+            password = '1234S5678'
+            user.set_password(password)
+            user.save()
 
         date = datetime.today()
 
@@ -21,32 +33,32 @@ class Command(BaseCommand):
             # Дата <  Время >
             {'time_mailing': f'{(datetime.now() + timedelta(hours=1)).strftime("%H:%M:%S")}',
              'end_datatime_mailing': f'{date - timedelta(1)}',
-             'frequency': 1, 'status': 'Создана', 'owner': user[0]},
+             'frequency': 1, 'status': 'Создана', 'owner': user},
 
             # Дата =  Время <
             {'time_mailing': f'{(datetime.now() - timedelta(hours=1)).strftime("%H:%M:%S")}',
              'end_datatime_mailing': f'{date - timedelta(1)}',
-             'frequency': 1, 'status': 'Создана', 'owner': user[0]},
+             'frequency': 1, 'status': 'Создана', 'owner': user},
 
             # Дата =  Время >
             {'time_mailing': f'{(datetime.now() + timedelta(hours=2)).strftime("%H:%M:%S")}',
              'end_datatime_mailing': f'{date}',
-             'frequency': 1, 'status': 'Создана', 'owner': user[0]},
+             'frequency': 1, 'status': 'Создана', 'owner': user},
 
             # Дата =  Время <
             {'time_mailing': f'{(datetime.now() - timedelta(hours=2)).strftime("%H:%M:%S")}',
              'end_datatime_mailing': f'{date}',
-             'frequency': 1, 'status': 'Создана', 'owner': user[0]},
+             'frequency': 1, 'status': 'Создана', 'owner': user},
 
             # Дата >  Время >
             {'time_mailing': f'{(datetime.now() + timedelta(hours=3)).strftime("%H:%M:%S")}',
              'end_datatime_mailing': f'{date + timedelta(1)}',
-             'frequency': 1, 'status': 'Создана', 'owner': user[0]},
+             'frequency': 1, 'status': 'Создана', 'owner': user},
 
             # Дата >  Время <
             {'time_mailing': f'{(datetime.now() - timedelta(hours=3)).strftime("%H:%M:%S")}',
              'end_datatime_mailing': f'{date + timedelta(1)}',
-             'frequency': 1, 'status': 'Создана', 'owner': user[0]},
+             'frequency': 1, 'status': 'Создана', 'owner': user},
         ]
         Mailing.objects.bulk_create([Mailing(**mailing_item) for mailing_item in mailing_list])
 
@@ -77,6 +89,8 @@ class Command(BaseCommand):
             {'topic': 'Сообщение2', 'body': 'Тело2', 'mailing': message_content[1]},
             {'topic': 'Сообщение3', 'body': 'Тело3', 'mailing': message_content[2]},
             {'topic': 'Сообщение4', 'body': 'Тело4', 'mailing': message_content[3]},
+            {'topic': 'Сообщение5', 'body': 'Тело5', 'mailing': message_content[4]},
+            {'topic': 'Сообщение6', 'body': 'Тело6', 'mailing': message_content[5]},
 
         ]
         MessageMailing.objects.bulk_create([MessageMailing(**content_item) for content_item in content_list])
