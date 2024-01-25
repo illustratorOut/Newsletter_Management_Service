@@ -22,57 +22,68 @@ def run_newsletter():
 
     print('Отправка рассылок')
     сurrent_time = datetime.datetime.today().strftime('%H:%M')
+    # __gte - Больще или равно
+    # __lte - Меньше или равно
 
-    newskatters = Mailing.objects.all().filter(status='Создана').filter(time_mailing__lte=сurrent_time).filter(
-        end_datatime_mailing__gte=f'{datetime.datetime.today().strftime("%Y-%m-%d")}T{datetime.datetime.today().strftime("%H:%M")}')
+    # newskatters = Mailing.objects.all().filter(status='Создана').filter(time_mailing__lte=сurrent_time).filter(
+    #     end_datatime_mailing__gte=f'{datetime.datetime.today().strftime("%Y-%m-%d")}T{datetime.datetime.today().strftime("%H:%M")}')
 
-    newskatters_ = Mailing.objects.all().filter(status='Создана').filter(time_mailing__gte=сurrent_time)
+    newskatters = Mailing.objects.all().filter(status='Создана')
 
-    print(newskatters_)
+    for i in newskatters:
+        date_time_str = str(datetime.datetime.today())
+        date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f')
 
-    if newskatters:
-        #  меньше или равно  - текущее время 23:18
-        print(f'меньше или равно {сurrent_time}')
-        pass
+        date_time_str2 = str(i.end_datatime_mailing.strftime('%Y-%m-%d %H:%M:%S.%f'))
+        date_time_obj2 = datetime.datetime.strptime(date_time_str2, '%Y-%m-%d %H:%M:%S.%f')
 
-    if newskatters_:
-        # + учитывать интервалл рассылок:
-        print(f'Больше или равно {сurrent_time}')
+        if date_time_obj2 >= date_time_obj:
+            # Дата >= Текущая дата
 
-        for newskatter_ in newskatters_:
-            newskatter_.status = 'Запущена'
-            newskatter_.save()
+            print(i)
+            print(i.time_mailing)
+            print(datetime.time())
 
-    for newskatter in newskatters:
-        newskatter.status = 'Запущена'
-        newskatter.save()
 
-    mailing = Mailing.objects.all().filter(status='Запущена')
+            if i.time_mailing >= datetime.time():
+                # Время >= Текущее время
 
-    # Есть информация о клиентах которые привязаны к рассылке
-    for task in mailing:
-        # print(task.сlient_key.all())
-        for client in task.сlient_key.all():
-            # print(client)
-            message = MessageMailing.objects.filter(mailing=task)
-            for k in message:
-                try:
-                    email_results = get_send_mail(client, k.topic, k.body)
+                pass
 
-                    data = datetime.datetime.now() + datetime.timedelta(int(task.frequency))
-                    # Реализовать проверку если дата не больше отправки сообщения тогда переводить в статус Запущена
-                    print(task.end_datatime_mailing)
-                    print('-------------------')
-                    print(data)
-                    if task.end_datatime_mailing > data:
-                        task.status = 'Запущена'
-                        task.save()
-                    else:
-                        task.status = 'Завершена'
-                        task.save()
-                except:
-                    # Реализовать логику - логирования статистики отправленных сообщений
-                    task.status = 'Завершена'
-                    task.save()
+            else:
+                # Время <= Текущее время
+                i.status = 'Запущена'
+                i.save()
 
-    # # Дальше получаем список клиентов в конце проверяем следующую дату отпраавки, если дата отправки коректна то меняем 'run' на 'created'
+        else:
+            # Дата <= Текущая дата
+            print(newskatters)
+            i.status = 'Завершена'
+            i.save()
+
+# if newskatters_b:
+#     mailing = Mailing.objects.all().filter(status='Запущена')
+#     # print(mailing)
+#     for task in mailing:
+#         for client in task.сlient_key.all():
+#             message = MessageMailing.objects.filter(mailing=task)
+#             for k in message:
+#                 get_send_mail(client, k.topic, k.body)
+#                 try:
+#                     data = datetime.datetime.now() + datetime.timedelta(int(task.frequency))
+#                     # Реализовать проверку если дата не больше отправки сообщения тогда переводить в статус Запущена
+#                     print(task.end_datatime_mailing)
+#                     print('-------------------')
+#                     print(data)
+#                     if task.end_datatime_mailing > data:
+#                         task.status = 'Запущена'
+#                         task.save()
+#                     else:
+#                         task.status = 'Завершена'
+#                         task.save()
+#                 except:
+#                     # Реализовать логику - логирования статистики отправленных сообщений
+#                     task.status = 'Завершена'
+#                     task.save()
+
+# # Дальше получаем список клиентов в конце проверяем следующую дату отпраавки, если дата отправки коeректна то меняем 'run' на 'created'

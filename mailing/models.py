@@ -1,6 +1,6 @@
 import colorama
 from django.conf import settings
-from django.db import models
+from django.db import models, connection
 from django.views import generic
 
 NULLABLE = {'null': True, 'blank': True}
@@ -18,7 +18,17 @@ FREQUENCY_CHOICES = (
 )
 
 
-class Client(models.Model):
+class Truncate:
+    @classmethod
+    def truncate(cls):
+        with connection.cursor() as cursor:
+            name_table = f'{cls.__module__.split(".")[0]}_{cls.__name__.lower()}'
+            cursor.execute(f'TRUNCATE TABLE "{name_table}" RESTART IDENTITY CASCADE')
+            print(colorama.Fore.GREEN + f'Таблица "{name_table}" очищена!' \
+                  + colorama.Fore.RESET)
+
+
+class Client(models.Model, Truncate):
     email = models.EmailField(verbose_name='Контактный email')
     full_name = models.CharField(max_length=150, verbose_name='ФИО')
     comment = models.TextField(verbose_name='Комментарий')
@@ -31,7 +41,7 @@ class Client(models.Model):
         verbose_name_plural = 'Клиенты'
 
 
-class Mailing(models.Model):
+class Mailing(models.Model, Truncate):
     time_mailing = models.TimeField(verbose_name='Время рассылки')
     end_datatime_mailing = models.DateTimeField(verbose_name='Дата и время окончания рассылки')
     frequency = models.CharField(choices=FREQUENCY_CHOICES, default='1',
@@ -51,7 +61,7 @@ class Mailing(models.Model):
         verbose_name_plural = 'Рассылки'
 
 
-class MessageMailing(models.Model):
+class MessageMailing(models.Model, Truncate):
     topic = models.CharField(max_length=100, verbose_name='Тема письма')
     body = models.TextField(verbose_name='Тело письма')
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name='Рассылки')
@@ -64,7 +74,7 @@ class MessageMailing(models.Model):
         verbose_name_plural = 'Сообщение для рассылок'
 
 
-class LogsMailing(models.Model):
+class LogsMailing(models.Model, Truncate):
     date = models.DateTimeField(verbose_name='Дата и время последней попытки')
     status = models.CharField(max_length=100, verbose_name='Статус попытки')
     mail_response = models.TextField(max_length=100, verbose_name='Ответ почтового сервера')

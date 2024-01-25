@@ -29,7 +29,7 @@ class MailingForm(StyleFormMixin, forms.ModelForm):
                 format='%Y-%m-%d %H:%M',
                 attrs={'type': 'datetime-local',
                        'min': f'{datetime.datetime.today().strftime("%Y-%m-%d")}',
-                       'value': f'{datetime.datetime.today().strftime("%Y-%m-%d")}T{datetime.datetime.today().strftime("%H:%M")}'
+                       'value': f'{datetime.datetime.today().strftime("%Y-%m-%d")} {datetime.datetime.today().strftime("%H:%M")}'
                        }),
 
         }
