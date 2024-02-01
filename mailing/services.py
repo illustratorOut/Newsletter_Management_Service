@@ -1,9 +1,15 @@
 import datetime
 
+import colorama
 from django.conf import settings
 from django.core.mail import send_mail
 
 from mailing.models import Mailing, MessageMailing, LogsMailing
+
+
+def log_print_crate_user(user, password):
+    print(
+        colorama.Fore.GREEN + f'Пользователь создан!\n' + colorama.Fore.RESET + 'login: ' + colorama.Fore.GREEN + f'{user.email}\n' + colorama.Fore.RESET + 'password: ' + colorama.Fore.GREEN + f'{password}' + colorama.Fore.RESET)
 
 
 def get_send_mail(mail, mail_header, mail_body):

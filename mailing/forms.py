@@ -36,6 +36,7 @@ class MailingForm(StyleFormMixin, forms.ModelForm):
 
 
 class MessageMailingForm(StyleFormMixin, forms.ModelForm):
+
     class Meta:
         model = MessageMailing
         fields = '__all__'

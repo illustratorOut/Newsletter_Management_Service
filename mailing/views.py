@@ -54,19 +54,23 @@ class MailingListView(LoginRequiredMixin, ListView):
     """Класс отображения рассылок"""
     model = Mailing
 
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        # if self.request.user == self.object.owner:
+        #     print('sdfsds')
+        #     pass
+
+        if self.request.user.has_perm("mailing.view_mailing"):
+            return context_data
+
+        return context_data
+
 
 class MailingUpdateView(LoginRequiredMixin, UpdateView):
     """Класс редактирования рассылок"""
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy('mailing:mailing_list')
-
-    def get_object(self, queryset=None):
-        '''Проверка на то что бы пользователь не мог редактировать чужие данные'''
-        self.object = super().get_object(queryset)
-        if self.object.owner != self.request.user:
-            raise Http404
-        return self.object
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -76,10 +80,14 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
             context_data['formset'] = MailingFormset(self.request.POST, instance=self.object)
         else:
             context_data['formset'] = MailingFormset(instance=self.object)
+
+        print(self.object)
         return context_data
 
     def form_valid(self, form):
+        """ Сохраняет данные из formset """
         formset = self.get_context_data()['formset']
+
         self.object = form.save()
         if formset.is_valid():
             formset.instance = self.object
@@ -87,6 +95,17 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
         else:
             return self.form_invalid(form)
         return super().form_valid(form)
+
+    def get_form(self, form_class=None):
+        """ Если у пользователя нет прав на редактирование поля (*делаем не активным), удаляем его из формы"""
+        form = super().get_form(form_class)
+        if self.object.owner != self.request.user:
+            mailing_fields = [fiel_key for fiel_key in form.fields.keys()]
+            for field in mailing_fields:
+                if not self.request.user.has_perm(f'mailing.set_{field}'):
+                    form.fields[field].disabled = True
+                    # del form.fields[field]
+        return form
 
 
 class MailingDeleteView(LoginRequiredMixin, DeleteView):
@@ -114,6 +133,12 @@ class HomeListView(LoginRequiredMixin, ListView):
         context['title'] = 'Online-MAILING - это отличный вариант отправки рассылок, который вы бы хотели'
         context['qty_mailing'] = Mailing.objects.filter(owner=self.request.user).count
         context['qty_client'] = Client.objects.all().count
-        context['activ_mailing'] = Mailing.objects.filter(Q(status='Создана') | Q(status='Запущена')).count
+
+        if self.request.user.has_perm('mailing.view_mailing'):
+            context['activ_mailing'] = Mailing.objects.filter(Q(status='Создана') | Q(status='Запущена')).count
+        else:
+            context['activ_mailing'] = Mailing.objects.filter(owner=self.request.user).filter(
+                Q(status='Создана') | Q(status='Запущена')).count
         context['photo_blog'] = Blog.objects.all()[:3]
+
         return context

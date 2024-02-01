@@ -10,7 +10,16 @@
             <thead>
             <tr>
                 <th scope="col"></th>
-                <th scope="col"></th>
+                <th scope="col">
+                    <style>
+                        .data {
+                        color: rgb(0, 0, 0);
+                        font-size:35px;
+                        text-shadow: rgb(204, 204, 204) 0px 1px 0px, rgb(201, 201, 201) 0px 2px 0px, rgb(187, 187, 187) 0px 3px 0px, rgb(185, 185, 185) 0px 4px 0px, rgb(170, 170, 170) 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 6px 1px, rgba(0, 0, 0, 0.1) 0px 0px 5px, rgba(0, 0, 0, 0.3) 0px 1px 3px, rgba(0, 0, 0, 0.15) 0px 3px 5px, rgba(0, 0, 0, 0.2) 0px 5px 10px, rgba(0, 0, 0, 0.2) 0px 10px 10px, rgba(0, 0, 0, 0.1) 0px 20px 20px;
+                        }
+                    </style>
+                    <div class="data">{% now "j F Y" %}</div>
+                </th>
                 <th scope="col">
                     <div class="watch">
                         <script type="text/javascript"
@@ -79,8 +88,7 @@
 
 
             {% for object in object_list %}
-            {% if object.owner == request.user %}
-
+            {% if perms.mailing.view_mailing or request.user == object.owner %}
             <tr>
                 <th scope="row">{{object.pk}}</th>
                 <td class=" text-center">{{object.end_datatime_mailing}}</td>
@@ -103,8 +111,24 @@
                 </td>
 
                 <td class="py-2">
-                    <a href="{% url 'mailing:update' object.pk %}" class="btn btn-outline-secondary btn-sm">Изменить</a>
-                    <a href="{% url 'mailing:delete' object.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>
+                    <div class="container">
+
+                        <div class="row">
+                            <div class="col m-0 p-0">
+                                {% if perms.mailing.change_mailing or object.owner == request.user %}
+                                <a href="{% url 'mailing:update' object.pk %}"
+                                   class="btn btn-outline-secondary btn-sm">Изменить</a>
+                                {% endif %}
+                            </div>
+                            <div class="col m-0 p-0">
+                                {% if perms.mailing.delete_mailing or object.owner == request.user %}
+                                <a href="{% url 'mailing:delete' object.pk %}" class="btn-basket btn btn-sm">
+                                    <img src="/media/delete.svg" style="width: 100%; height: 1.2em">
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>
 
@@ -116,90 +140,16 @@
 </div>
 
 
-<!--<div class="container py-3">-->
-<!--    <div class="row row-cols-1 row-cols-md-4 mb-3 text-center">-->
-<!--        {% for object in object_list %}-->
-<!--        <div class="col mb-4 box-shadow rounded-3">-->
-
-<!--            <div class="card h-100 ">-->
-
-<!--                <div class="card-header py-3 ">-->
-<!--                    <h4 class="my-0 font-weight-normal">-->
-<!--                        <div class="circle circle-lg ">-->
-
-<!--                            Пользователь-->
-
-<!--                        </div>-->
-<!--                    </h4>-->
-<!--                </div>-->
-
-<!--                <div class="card-body">-->
-<!--                    <div class="card-body-header">-->
-<!--                        <h1 class="card-title pricing-card-title">{{object.status}}</h1>-->
-
-
-<!--                        <ul class="list-group">-->
-<!--                            <li class="list-group-item list-group-item-success"><i class="fa fa-briefcase"-->
-<!--                                                                                   style="font-size:20px;"></i>-->
-<!--                                Company:-->
-<!--                            </li>-->
-<!--                            <li class="list-group-item list-group-item-success"><i class="fa fa-user"-->
-<!--                                                                                   style="font-size:20px;"></i> Role-->
-<!--                            </li>-->
-<!--                            <li class="list-group-item list-group-item-success"><i class="fa fa-map-marker"-->
-<!--                                                                                   style="font-size:20px;"></i>-->
-<!--                                Location-->
-<!--                            </li>-->
-<!--                            <li class="list-group-item list-group-item-success"><i class="fa fa-clock-o"-->
-<!--                                                                                   style="font-size:20px;"></i>-->
-<!--                                Duration-->
-<!--                            </li>-->
-<!--                            <li class="list-group-item list-group-item-success"><i class="fa fa-inr"-->
-<!--                                                                                   style="font-size:20px;"></i> Cost-->
-<!--                            </li>-->
-<!--                        </ul>-->
-
-
-<!--                    </div>-->
-
-<!--                    <div class="card-body-body ">-->
-
-
-<!--                    </div>-->
-<!--                </div>-->
-
-
-<!--                <div class="col-auto py-3">-->
-<!--                    <a href="#"-->
-<!--                       class="btn btn-outline-primary btn-sm">Просмотр</a>-->
-<!--                    -->
-
-
-<!--                    {% if item.owner == request.user %}-->
-<!--                    <a href="#"-->
-<!--                       class="{% url 'mailing:update' object.pk %}">Изменить</a>-->
-<!--                    {% elif perms.catalog.set_is_published %}-->
-<!--                    <a href="{% url 'mailing:update' object.pk %}"-->
-<!--                       class="btn btn-outline-secondary btn-sm">Изменить</a>-->
-<!--                    {% endif %}-->
-
-<!--                    {% if perms.catalog.delete_product %}-->
-<!--                    <a href="{% url 'mailing:delete' object.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>-->
-<!--                    {% endif %}-->
-<!--                </div>-->
-
-
-<!--                <div class="card-footer">-->
-<!--                    <small class="text-muted">{{object.time_mailing}}</small>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        {% endfor %}-->
-
-<!--    </div>-->
-<!--</div>-->
-
+<style>
+    .btn-basket{
+         border: 1px solid black;
+    }
+     .btn-basket:hover{
+      border: 1px solid black;
+            -webkit-filter: sepia(1) hue-rotate(320deg) saturate(10);
+            filter: sepia(1) hue-rotate(320deg) saturate(10);
+    }
+</style>
 
 {% endblock %}
 

@@ -97,11 +97,21 @@
                 <div class="carousel-inner">
                     {% for object in photo_blog %}
                     <div class="carousel-item active" data-bs-interval="10000">
-                        <img src="/media/{{object.preview}}" class="d-block w-100" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>{{object.title}}</h5>
-                            <p>{{object.body}}</p>
+
+
+                        <div class="hover-effect-btn">
+                            <img src="/media/{{object.preview}}" class="d-block w-100" alt="...">
+                            <div class="overlay"></div>
+                            <div class="button"><a href="#">Перейти к статье</a></div>
+
+
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5 class="title">{{object.title}}</h5>
+                                <p>{{object.body}}</p>
+                            </div>
                         </div>
+
+
                     </div>
                     {% endfor %}
                 </div>
@@ -387,5 +397,61 @@
 
     </div>
 </div>
+
+
+<style>
+    .hover-effect-btn {
+      position: relative;
+      width: 100%;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5); /* Настройка цвета и прозрачности для блока с заголовком */
+      transition: background 0.5s ease;
+    }
+    .hover-effect-btn:hover .overlay {
+      display: block;
+      background: rgba(0, 0, 0, 0.9); /* Настройка цвета и прозрачности для блока с заголовком при наведении */
+    }
+    .title {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 25%; /* Отступ сверху */
+      font-size: 1.900em; /* Размер текста заголовка */
+      text-align: center;
+      text-transform: uppercase; /* Заглавные буквы */
+      color: white; /* Цвет заголовка */
+      z-index: 1;
+      transition: top .5s ease;
+    }
+    .hover-effect-btn:hover .title {
+      top: 10%; /* Отступ сверху при наведении */
+    }
+    .button {
+      position: absolute;
+      width: 100%;
+      left:0;
+      top: 65%; /* Отступ сверху */
+      text-align: center;
+      opacity: 0;
+      transition: opacity .35s ease;
+    }
+    .button a {
+      padding: 15px 40px; /* Отступ */
+      text-align: center;
+      background: #ff921e; /* Цвет кнопки */
+      color: white; /* Цвет текста */
+      border: 1px solid white; /* Ширина, стиль и цвет границы */
+      z-index: 1;
+    }
+    .hover-effect-btn:hover .button {
+      opacity: 1;
+    }
+</style>
 
 {% endblock %}

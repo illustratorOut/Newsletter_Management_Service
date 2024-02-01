@@ -59,6 +59,7 @@ class Mailing(models.Model, Truncate):
     class Meta:
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
+        ordering = ['-status', 'end_datatime_mailing']
 
 
 class MessageMailing(models.Model, Truncate):
