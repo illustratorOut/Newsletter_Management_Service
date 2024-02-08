@@ -1,11 +1,12 @@
 import random
 
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 
-from users.forms import UserRegisterForm
+from users.forms import UserRegisterForm, UserForm
 from users.models import User
 from users.services import get_send_mail
 
@@ -36,3 +37,19 @@ class RegisterView(CreateView):
 
                     return super().form_valid(form)
         return super().form_valid(form)
+
+
+class UsersListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = User
+    form_class = UserForm
+    success_url = '/'
+    permission_required = 'users.view_user'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if not self.request.user.is_superuser:
+            context['object_list'] = User.objects.filter(is_staff=False).filter(is_superuser=False)
+        else:
+            context['object_list'] = User.objects.exclude(email=self.request.user)
+        return context

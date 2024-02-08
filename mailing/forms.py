@@ -36,6 +36,10 @@ class MailingForm(StyleFormMixin, forms.ModelForm):
 
 
 class MessageMailingForm(StyleFormMixin, forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(MessageMailingForm, self).__init__(*args, **kwargs)
+
+        # self.fields['body'].disabled = True
 
     class Meta:
         model = MessageMailing

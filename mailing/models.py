@@ -60,6 +60,12 @@ class Mailing(models.Model, Truncate):
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
         ordering = ['-status', 'end_datatime_mailing']
+        permissions = [
+            (
+                'set_status',
+                'Can publish mailing'
+            )
+        ]
 
 
 class MessageMailing(models.Model, Truncate):
