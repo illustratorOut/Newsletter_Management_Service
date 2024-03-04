@@ -3,7 +3,7 @@ from django.urls import path
 
 from users.apps import UsersConfig
 from users.services import is_active_key_registration
-from users.views import RegisterView, UsersListView
+from users.views import RegisterView, UsersListView, change_task_status
 
 app_name = UsersConfig.name
 
@@ -13,4 +13,6 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('client', UsersListView.as_view(), name='client'),
     path('key-registration/<str:key>', is_active_key_registration, name='key_registration'),
+
+    path('task-status/<int:pk>/<str:status>/', change_task_status, name='change_task_status'),
 ]

@@ -6,6 +6,7 @@
 
 <div class="container">
 
+    {% if not button_add_client%}
     <div class="d-grid gap-2 col-2 mx-auto">
         <div class="row justify-content-center">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -15,6 +16,7 @@
         </div>
     </div>
     <br>
+     {% endif %}
 
     <form method="post" enctype="multipart/form-data">
         <div class="row justify-content-center">
@@ -51,6 +53,7 @@
                     <div class="card-body">
                         {{ formset.management_form }}
                         {% for form in formset.forms %}
+
                         {{ form.as_p }}
 
                         {% if not formloop.last %}

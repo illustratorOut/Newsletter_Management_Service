@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DetailView
 
 from blog.forms import BlogForm
 from blog.models import Blog
@@ -27,3 +27,13 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
             self.object.owner = self.request.user
             self.object.save()
         return super().form_valid(form)
+
+
+class BlogDetailView(DetailView):
+    model = Blog
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        self.object.count_views += 1
+        self.object.save()
+        return self.object

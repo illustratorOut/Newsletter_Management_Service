@@ -9,7 +9,7 @@ from mailing.models import Mailing, MessageMailing, LogsMailing
 
 def log_print_crate_user(user, password):
     print(
-        colorama.Fore.GREEN + f'Пользователь создан!\n' + colorama.Fore.RESET + 'login: ' + colorama.Fore.GREEN + f'{user.email}\n' + colorama.Fore.RESET + 'password: ' + colorama.Fore.GREEN + f'{password}' + colorama.Fore.RESET)
+        colorama.Fore.GREEN + f'Пользователь создан!\n' + colorama.Fore.RESET + 'login: ' + colorama.Fore.GREEN + f'{user.email}\n' + colorama.Fore.RESET + 'password: ' + colorama.Fore.GREEN + f'{password}' + colorama.Fore.RESET + '\n')
 
 
 def get_send_mail(mail, mail_header, mail_body):
@@ -56,10 +56,15 @@ def run_newsletter():
 
                 for client in i.сlient_key.all():
                     message = MessageMailing.objects.filter(mailing=i.pk)
-                    for k in message:
-                        response_email = get_send_mail(client.email, k.topic, k.body)
+                    print(client.email)
 
-                        print(response_email)
+                    for k in message:
+                        print('-' * 20)
+                        print(k.topic)
+                        print(k.body)
+
+                        get_send_mail(client.email, k.topic, k.body)
+
                 log = LogsMailing.objects.create(
                     date=datetime.datetime.today(),
                     status=True,

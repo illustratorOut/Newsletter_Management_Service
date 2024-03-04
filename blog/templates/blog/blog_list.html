@@ -38,11 +38,16 @@
         <div class="col-md-6">
             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                 <div class="col p-4 d-flex flex-column position-static" style="border: 1px solid black;">
+
+                    <div class="row p-0 m-0">
+                        <img class="p-1 m-0" src="/media/blog/views.png" style="width:7%; height:auto"> {{object.count_views}}
+                    </div>
+
                     <strong class="d-inline-block mb-2 text-success">{{object.owner}}</strong>
                     <h3 class="mb-0">{{object.title}}</h3>
                     <div class="mb-1 text-muted">{{object.date_create|date:'j E'}}</div>
                     <p class="mb-auto">{{object.body}}</p>
-                    <a href="#" class="stretched-link">Продолжить чтение</a>
+                    <a href="{% url 'blog:view' object.pk%}" class="stretched-link">Продолжить чтение</a>
                 </div>
                 <div class="col-auto d-none d-lg-block">
                     <img class="p-1" style="width:200px; height:250px; border: 2px solid black;"

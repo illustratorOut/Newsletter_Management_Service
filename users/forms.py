@@ -15,7 +15,11 @@ class UserRegisterForm(UserCreationForm, StyleFormMixin, forms.ModelForm):
 class UserForm(forms.ModelForm,StyleFormMixin):
     class Meta:
         model = User
-        fields = ('is_active',)
+        fields = '__all__'
         widgets = {
-            'is_anything_required': CheckboxInput(attrs={'class': 'required checkbox form-control'}),
+            'is_active': forms.CheckboxInput()
         }
+
+        # widgets = {
+        #     'is_anything_required': CheckboxInput(attrs={'class': 'required checkbox form-control'}),
+        # }
