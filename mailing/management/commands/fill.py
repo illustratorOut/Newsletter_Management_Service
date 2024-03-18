@@ -34,32 +34,81 @@ class Command(BaseCommand):
             {'time_mailing': f'{(datetime.now() + timedelta(hours=1)).strftime("%H:%M:%S")}',
              'end_datatime_mailing': f'{date - timedelta(1)}',
              'frequency': 1, 'status': 'Создана', 'owner': user},
+            # 7
+            {'time_mailing': f'{(datetime.now() + timedelta(hours=1)).strftime("%H:%M:%S")}',
+             'end_datatime_mailing': f'{date - timedelta(1)}',
+             'frequency': 7, 'status': 'Создана', 'owner': user},
+            # 30
+            {'time_mailing': f'{(datetime.now() + timedelta(hours=1)).strftime("%H:%M:%S")}',
+             'end_datatime_mailing': f'{date - timedelta(1)}',
+             'frequency': 30, 'status': 'Создана', 'owner': user},
 
             # Дата =  Время <
             {'time_mailing': f'{(datetime.now() - timedelta(hours=1)).strftime("%H:%M:%S")}',
              'end_datatime_mailing': f'{date - timedelta(1)}',
              'frequency': 1, 'status': 'Создана', 'owner': user},
+            # 7
+            {'time_mailing': f'{(datetime.now() - timedelta(hours=1)).strftime("%H:%M:%S")}',
+             'end_datatime_mailing': f'{date - timedelta(1)}',
+             'frequency': 7, 'status': 'Создана', 'owner': user},
+            # 30
+            {'time_mailing': f'{(datetime.now() - timedelta(hours=1)).strftime("%H:%M:%S")}',
+             'end_datatime_mailing': f'{date - timedelta(1)}',
+             'frequency': 30, 'status': 'Создана', 'owner': user},
 
             # Дата =  Время >
             {'time_mailing': f'{(datetime.now() + timedelta(hours=2)).strftime("%H:%M:%S")}',
              'end_datatime_mailing': f'{date}',
              'frequency': 1, 'status': 'Создана', 'owner': user},
+            # 7
+            {'time_mailing': f'{(datetime.now() + timedelta(hours=2)).strftime("%H:%M:%S")}',
+             'end_datatime_mailing': f'{date}',
+             'frequency': 7, 'status': 'Создана', 'owner': user},
+            # 30
+            {'time_mailing': f'{(datetime.now() + timedelta(hours=2)).strftime("%H:%M:%S")}',
+             'end_datatime_mailing': f'{date}',
+             'frequency': 30, 'status': 'Создана', 'owner': user},
 
             # Дата =  Время <
             {'time_mailing': f'{(datetime.now() - timedelta(hours=2)).strftime("%H:%M:%S")}',
              'end_datatime_mailing': f'{date}',
              'frequency': 1, 'status': 'Создана', 'owner': user},
+            # 7
+            {'time_mailing': f'{(datetime.now() - timedelta(hours=2)).strftime("%H:%M:%S")}',
+             'end_datatime_mailing': f'{date}',
+             'frequency': 7, 'status': 'Создана', 'owner': user},
+            # 30
+            {'time_mailing': f'{(datetime.now() - timedelta(hours=2)).strftime("%H:%M:%S")}',
+             'end_datatime_mailing': f'{date}',
+             'frequency': 30, 'status': 'Создана', 'owner': user},
 
             # Дата >  Время >
             {'time_mailing': f'{(datetime.now() + timedelta(hours=3)).strftime("%H:%M:%S")}',
              'end_datatime_mailing': f'{date + timedelta(1)}',
              'frequency': 1, 'status': 'Создана', 'owner': user},
+            # 7
+            {'time_mailing': f'{(datetime.now() + timedelta(hours=3)).strftime("%H:%M:%S")}',
+             'end_datatime_mailing': f'{date + timedelta(1)}',
+             'frequency': 7, 'status': 'Создана', 'owner': user},
+            # 30
+            {'time_mailing': f'{(datetime.now() + timedelta(hours=3)).strftime("%H:%M:%S")}',
+             'end_datatime_mailing': f'{date + timedelta(1)}',
+             'frequency': 30, 'status': 'Создана', 'owner': user},
 
             # Дата >  Время <
             {'time_mailing': f'{(datetime.now() - timedelta(hours=3)).strftime("%H:%M:%S")}',
              'end_datatime_mailing': f'{date + timedelta(1)}',
              'frequency': 1, 'status': 'Создана', 'owner': user},
+            # 7
+            {'time_mailing': f'{(datetime.now() - timedelta(hours=3)).strftime("%H:%M:%S")}',
+             'end_datatime_mailing': f'{date + timedelta(1)}',
+             'frequency': 7, 'status': 'Создана', 'owner': user},
+            # 30
+            {'time_mailing': f'{(datetime.now() - timedelta(hours=3)).strftime("%H:%M:%S")}',
+             'end_datatime_mailing': f'{date + timedelta(1)}',
+             'frequency': 30, 'status': 'Создана', 'owner': user},
         ]
+
         Mailing.objects.bulk_create([Mailing(**mailing_item) for mailing_item in mailing_list])
 
         my_client1 = Client.objects.create(email='bmgula55@mail.ru', full_name='Александр1')

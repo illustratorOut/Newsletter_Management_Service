@@ -1,9 +1,9 @@
 from colorama import Fore
+from colorama import Fore
 from django.contrib.auth import get_user_model
 from django.core.management import BaseCommand
 
 from mailing.models import Mailing
-from mailing.services import log_print_crate_user
 from users.models import User
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
@@ -47,7 +47,8 @@ class Command(BaseCommand):
                 user = User.objects.create(**dict_user[row])
                 user.set_password(password)
                 user.save()
-                log_print_crate_user(user, password)
+                print(
+                    f'{Fore.GREEN}Пользователь создан!\n {Fore.RESET}login: {Fore.GREEN} {user.email}\n {Fore.RESET}password: {Fore.GREEN}{password}{Fore.RESET}\n')
 
         # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
         self.add_group('Менеджер')
@@ -81,26 +82,4 @@ class Command(BaseCommand):
                 manager_group.permissions.add(perm)
                 print('+ ' + Fore.GREEN + f'{perm}' + Fore.RESET)
 
-# $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
-
-# def permissions_group(self):
-#     ''' Код для добавления разрешения в группу
-#         view_user -
-#         add_user -
-#         change_user -
-#         delete_user -
-#     '''
-#     ct = ContentType.objects.get_for_model(User)
-#     post_permission = Permission.objects.filter(content_type=ct)
-#
-#     for perm in post_permission:
-#         if perm.codename == "view_user":
-#             manager_group.permissions.add(perm)
-
-# # If I want to add 'Can go Haridwar' permission to level0 ?
-# permission = Permission.objects.create(codename='can_go_haridwar',
-#                                        name='Can go to Haridwar',
-#                                        content_type=ct)
-#
-# new_group.permissions.add(permission)
+    # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$

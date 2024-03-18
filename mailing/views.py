@@ -141,6 +141,10 @@ class HomeListView(LoginRequiredMixin, ListView):
         context['qty_mailing'] = Mailing.objects.filter(owner=self.request.user).count
         context['qty_client'] = Client.objects.all().count
         context['qty_mailing_all'] = Mailing.objects.all().count
+        context['LogsMailing_success'] = LogsMailing.objects.filter(status='Успешно').count
+        context['LogsMailing_error'] = LogsMailing.objects.filter(status='Ошибка').count
+        context['LogsMailing_result'] = LogsMailing.objects.filter(status='Успешно').count
+
 
         if self.request.user.has_perm('mailing.view_mailing'):
             context['activ_mailing'] = Mailing.objects.filter(Q(status='Создана') | Q(status='Запущена')).count

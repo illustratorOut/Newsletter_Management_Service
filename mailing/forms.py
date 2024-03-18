@@ -21,12 +21,13 @@ class MailingForm(StyleFormMixin, forms.ModelForm):
 
         widgets = {
             'time_mailing': forms.TimeInput(
+                format='%H:%M:%S',
                 attrs={'type': 'time',
                        # 'min': datetime.datetime.today().strftime('%H:%M'),
                        'value': datetime.datetime.today().strftime('%H:%M')}),
 
             'end_datatime_mailing': forms.DateInput(
-                format='%Y-%m-%d %H:%M',
+                format='%Y-%m-%d %H:%M:%S',
                 attrs={'type': 'datetime-local',
                        'min': f'{datetime.datetime.today().strftime("%Y-%m-%d")}',
                        'value': f'{datetime.datetime.today().strftime("%Y-%m-%d")} {datetime.datetime.today().strftime("%H:%M")}'

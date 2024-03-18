@@ -1,89 +1,80 @@
-import datetime
+from datetime import datetime, timezone, timedelta
 
-import colorama
 from django.conf import settings
 from django.core.mail import send_mail
 
 from mailing.models import Mailing, MessageMailing, LogsMailing
 
 
-def log_print_crate_user(user, password):
-    print(
-        colorama.Fore.GREEN + f'Пользователь создан!\n' + colorama.Fore.RESET + 'login: ' + colorama.Fore.GREEN + f'{user.email}\n' + colorama.Fore.RESET + 'password: ' + colorama.Fore.GREEN + f'{password}' + colorama.Fore.RESET + '\n')
-
-
-def get_send_mail(mail, mail_header, mail_body):
+def _send_mail(mail, header, body):
     """Отправка рассылок на почту"""
-
     send_mail(
-        subject=mail_header,
-        message=mail_body,
+        subject=header,
+        message=body,
         from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[mail],
-        # fail_silently=False,
+        recipient_list=mail,
+        fail_silently=False,
     )
     return send_mail
 
 
+def log_send_mail(respons_email, mailing):
+    ''' Логирования: по ходу отправки сообщений собирается статистика '''
+    date = datetime.now(timezone.utc)
+
+    if respons_email:
+        log = LogsMailing.objects.create(date=date, mail_response=respons_email, status='Успешно', mailing=mailing)
+    else:
+        log = LogsMailing.objects.create(date=date, mail_response=respons_email, status='Ошибка', mailing=mailing)
+    log.save()
+
+
 def run_newsletter():
     '''Список рассылок'''
-
-    print('Отправка рассылок')
     # __gte - Больще или равно
     # __lte - Меньше или равно
 
-    #     end_datatime_mailing__gte=f'{datetime.datetime.today().strftime("%Y-%m-%d")}T{datetime.datetime.today().strftime("%H:%M")}')
+    сreated_mailing = Mailing.objects.all().filter(status='Создана')
+    launched_mailing = Mailing.objects.all().filter(status='Запущена')
+    current_date_time = datetime.now(timezone.utc)
+    current_time = datetime.now().time()
 
-    newskatters = Mailing.objects.all().filter(status='Создана')
+    print(сreated_mailing)
 
-    for i in newskatters:
-        date_time_str = str(datetime.datetime.today())
-        date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f')
+    handler_email(сreated_mailing, current_date_time, current_time)
+    handler_email(launched_mailing, current_date_time, current_time)
 
-        date_time_str2 = str(i.end_datatime_mailing.strftime('%Y-%m-%d %H:%M:%S.%f'))
-        date_time_obj2 = datetime.datetime.strptime(date_time_str2, '%Y-%m-%d %H:%M:%S.%f')
 
-        if date_time_obj2 >= date_time_obj:
-            # Дата >= Текущая дата
+def handler_email(сreated_mailing, current_date_time, current_time):
+    for mailing in сreated_mailing:
+        if current_date_time > mailing.end_datatime_mailing:
+            ''' Если текущее дата и время больше >  даты и времени окончания рассылки '''
+            client = [client.email for client in mailing.сlient_key.all()]
+            message = MessageMailing.objects.filter(mailing=mailing.pk)
+            sending_messages = [_send_mail(client, row.topic, row.body) for row in message]
+            log_send_mail(sending_messages, mailing)
 
-            if i.time_mailing >= datetime.datetime.now().time():
-                # Время >= Текущее время
-                pass
+            mailing.status = 'Завершена'
+            mailing.save()
+            continue
+
+        elif current_time >= mailing.time_mailing and current_date_time < mailing.end_datatime_mailing:
+            ''' Если текущее время больше > времени начала и текущее дата и время меньше < даты и времени окончания '''
+
+            print('______________запущена_отправка_для_всех_этих_клиентов______________')
+            client = [client.email for client in mailing.сlient_key.all()]
+            message = MessageMailing.objects.filter(mailing=mailing.pk)
+            sending_messages = [_send_mail(client, row.topic, row.body) for row in message]
+            log_send_mail(sending_messages, mailing)
+
+            if mailing.end_datatime_mailing > timedelta(days=int(mailing.frequency)) + current_date_time:
+                ''' Дата окончания рассылки больше > шаг(1,7,30 дней) + текущая дата  '''
+                mailing.status = 'Запущена'
+                mailing.save()
             else:
-                # Время <= Текущее время
-                i.status = 'Запущена'
-                i.save()
+                mailing.status = 'Завершена'
+                mailing.save()
 
-                for client in i.сlient_key.all():
-                    message = MessageMailing.objects.filter(mailing=i.pk)
-                    print(client.email)
-
-                    for k in message:
-                        print('-' * 20)
-                        print(k.topic)
-                        print(k.body)
-
-                        get_send_mail(client.email, k.topic, k.body)
-
-                log = LogsMailing.objects.create(
-                    date=datetime.datetime.today(),
-                    status=True,
-                    mail_response=str(response_email),
-                    mailing=i,
-                )
-                log.save()
-
-                print(i.time_mailing)
-                print(i.end_datatime_mailing.time())
-                if i.time_mailing >= i.end_datatime_mailing.time():
-                    # Время <= Текущее время
-                    i.status = 'Завершено'
-                    i.save()
-
-
-        else:
-            # Дата <= Текущая дата
-            i.status = 'Завершена'
-            i.save()
-
-# # Дальше получаем список клиентов в конце проверяем следующую дату отпраавки, если дата отправки коeректна то меняем 'run' на 'created'
+        elif current_time <= mailing.time_mailing and current_date_time < mailing.end_datatime_mailing:
+            mailing.status = 'Запущена'
+            mailing.save()
