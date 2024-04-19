@@ -16,6 +16,7 @@
 | Добавить пользователей      | ```python manage.py ccsu```         |
 | Заполнить список рассылок   | ```python manage.py fill```         |
 | Заполнить контент для блога | ```python manage.py content_blog``` |
+| Запуск "отправки сообщений" | ```python manage.py run_apt```      |
 
 </div>
 
