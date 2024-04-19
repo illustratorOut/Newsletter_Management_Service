@@ -42,7 +42,8 @@ class Command(BaseCommand):
             password = dict_user[row]['password']
 
             if User.objects.filter(email=email):
-                print(f'Пользователь' + Fore.RED + f' {email} ' + Fore.RESET + 'уже существует!')
+                print(
+                    f'Пользователь' + Fore.RED + f' {email} ' + Fore.RESET + f'уже существует! password: ({Fore.GREEN}{password}{Fore.RESET})')
             else:
                 user = User.objects.create(**dict_user[row])
                 user.set_password(password)

@@ -92,8 +92,7 @@
             <tr>
                 <th scope="row">{{object.pk}}</th>
                 <td class=" text-center">{{object.end_datatime_mailing}}</td>
-                <!--                <td>{{object.time_mailing}} </td>-->
-                <td><input type="time" class="form-control" value={{object.time_mailing}} formaction="%H:%M:%S"/></td>
+                <td>{{object.time_mailing}}</td>
                 <td>{{object.frequency}}</td>
                 <td>
                     {% for object in object.сlient_key.all %}

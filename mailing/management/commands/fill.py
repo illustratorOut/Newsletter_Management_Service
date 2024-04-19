@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 from mailing.models import Client, Mailing, MessageMailing
 from users.models import User
+from random import choice
 
 
 class Command(BaseCommand):
@@ -28,15 +29,15 @@ class Command(BaseCommand):
             user.save()
 
         date = datetime.today()
-
         mailing_list = [
             # Дата <  Время >
             {'time_mailing': f'{(datetime.now() + timedelta(hours=1)).strftime("%H:%M:%S")}',
              'end_datatime_mailing': f'{date - timedelta(1)}',
              'frequency': 1, 'status': 'Создана', 'owner': user},
+
             # 7
             {'time_mailing': f'{(datetime.now() + timedelta(hours=1)).strftime("%H:%M:%S")}',
-             'end_datatime_mailing': f'{date - timedelta(1)}',
+             'end_datatime_mailing': f'{date + timedelta(1)}',
              'frequency': 7, 'status': 'Создана', 'owner': user},
             # 30
             {'time_mailing': f'{(datetime.now() + timedelta(hours=1)).strftime("%H:%M:%S")}',
@@ -108,38 +109,16 @@ class Command(BaseCommand):
              'end_datatime_mailing': f'{date + timedelta(1)}',
              'frequency': 30, 'status': 'Создана', 'owner': user},
         ]
-
         Mailing.objects.bulk_create([Mailing(**mailing_item) for mailing_item in mailing_list])
 
-        my_client1 = Client.objects.create(email='bmgula55@mail.ru', full_name='Александр1')
-        my_client2 = Client.objects.create(email='bmgula55@mail.ru', full_name='Александр2')
-        my_client3 = Client.objects.create(email='bmgula55@mail.ru', full_name='Александр3')
-        my_client4 = Client.objects.create(email='bmgula55@mail.ru', full_name='Александр4')
-        my_client5 = Client.objects.create(email='bmgula55@mail.ru', full_name='Александр5')
-        my_client6 = Client.objects.create(email='bmgula55@mail.ru', full_name='Александр6')
+        client = [Client.objects.create(email='bmgula55@mail.ru', full_name=f'Александр{i}') for i in
+                  range(1, len(mailing_list) + 1)]
 
-        my_post1 = Mailing.objects.get(pk=1)
-        my_post2 = Mailing.objects.get(pk=2)
-        my_post3 = Mailing.objects.get(pk=3)
-        my_post4 = Mailing.objects.get(pk=4)
-        my_post5 = Mailing.objects.get(pk=5)
-        my_post6 = Mailing.objects.get(pk=6)
+        for item in range(1, len(mailing_list) + 1):
+            random_client = choice(client)
+            my_post = Mailing.objects.get(pk=item)
+            my_post.сlient_key.add(random_client)
 
-        my_post1.сlient_key.add(my_client1)
-        my_post2.сlient_key.add(my_client2)
-        my_post3.сlient_key.add(my_client3)
-        my_post4.сlient_key.add(my_client4)
-        my_post5.сlient_key.add(my_client5)
-        my_post6.сlient_key.add(my_client6)
-
-        message_content = Mailing.objects.all()
-        content_list = [
-            {'topic': 'Сообщение1', 'body': 'Тело1', 'mailing': message_content[0]},
-            {'topic': 'Сообщение2', 'body': 'Тело2', 'mailing': message_content[1]},
-            {'topic': 'Сообщение3', 'body': 'Тело3', 'mailing': message_content[2]},
-            {'topic': 'Сообщение4', 'body': 'Тело4', 'mailing': message_content[3]},
-            {'topic': 'Сообщение5', 'body': 'Тело5', 'mailing': message_content[4]},
-            {'topic': 'Сообщение6', 'body': 'Тело6', 'mailing': message_content[5]},
-
-        ]
-        MessageMailing.objects.bulk_create([MessageMailing(**content_item) for content_item in content_list])
+        content = [{'topic': f'Сообщение{item}', 'body': f'Тело{item}', 'mailing': Mailing.objects.all()[item]} for item
+                   in range(len(mailing_list))]
+        MessageMailing.objects.bulk_create([MessageMailing(**content_item) for content_item in content])

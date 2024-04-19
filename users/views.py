@@ -1,6 +1,7 @@
 import random
 
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -53,6 +54,8 @@ class UsersListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     #     else:
     #         context['object_list'] = User.objects.exclude(email=self.request.user)
     #     return context
+
+
 
 
 def change_task_status(request, pk, status):
