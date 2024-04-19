@@ -3,7 +3,7 @@ import datetime
 from django import forms
 from django.forms import widgets
 
-from mailing.models import Mailing, MessageMailing
+from mailing.models import Mailing, MessageMailing, Client
 
 
 class StyleFormMixin:
@@ -16,21 +16,38 @@ class StyleFormMixin:
 class MailingForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Mailing
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ('owner',)
+
         widgets = {
-            'time_mailing': forms.DateInput(
+            'time_mailing': forms.TimeInput(
+                format='%H:%M:%S',
                 attrs={'type': 'time',
-                       'min': datetime.datetime.today().strftime('%H:%M'),
+                       # 'min': datetime.datetime.today().strftime('%H:%M'),
                        'value': datetime.datetime.today().strftime('%H:%M')}),
-            'end_datatime_mailing': forms.DateTimeInput(
+
+            'end_datatime_mailing': forms.DateInput(
+                format='%Y-%m-%d %H:%M:%S',
                 attrs={'type': 'datetime-local',
-                       'min': f'{datetime.datetime.today().strftime("%Y-%m-%d")}T{datetime.datetime.today().strftime("%H:%M")}',
-                       'value': f'{datetime.datetime.today().strftime("%Y-%m-%d")}T{datetime.datetime.today().strftime("%H:%M")}'
-                       })
+                       'min': f'{datetime.datetime.today().strftime("%Y-%m-%d")}',
+                       'value': f'{datetime.datetime.today().strftime("%Y-%m-%d")} {datetime.datetime.today().strftime("%H:%M")}'
+                       }),
+
         }
 
 
 class MessageMailingForm(StyleFormMixin, forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(MessageMailingForm, self).__init__(*args, **kwargs)
+
+        # self.fields['body'].disabled = True
+
     class Meta:
         model = MessageMailing
+        fields = '__all__'
+
+
+class ClientForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = Client
         fields = '__all__'

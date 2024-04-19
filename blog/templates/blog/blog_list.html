@@ -1,0 +1,63 @@
+{% extends 'mailing/base.html' %}
+
+
+{% block content%}
+
+<div class="container py-3">
+    {% if user.is_authenticated %}
+    <div class="mb-5">
+        <a class="btn btn-primary" href="{% url 'blog:create' %}">Создать статью</a>
+    </div>
+    {% endif %}
+    <div class="row row-cols-1 row-cols-md-4 mb-3 text-center">
+
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-success">Автор</strong>
+                    <h3 class="mb-0">Заголовок поста</h3>
+                    <div class="mb-1 text-muted">11 Ноября</div>
+                    <p class="mb-auto">Это более широкая карточка с вспомогательным текстом ниже в качестве
+                        естественного перехода к дополнительному контенту.</p>
+                    <a href="#" class="stretched-link">Продолжить чтение</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+
+                    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"
+                         role="img" aria-label="Placeholder: Эскиз" preserveAspectRatio="xMidYMid slice"
+                         focusable="false"><title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#55595c"></rect>
+                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Эскиз</text>
+                    </svg>
+
+                </div>
+            </div>
+        </div>
+
+        {% for object in object_list %}
+        <div class="col-md-6">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static" style="border: 1px solid black;">
+
+                    <div class="row p-0 m-0">
+                        <img class="p-1 m-0" src="/media/blog/views.png" style="width:7%; height:auto"> {{object.count_views}}
+                    </div>
+
+                    <strong class="d-inline-block mb-2 text-success">{{object.owner}}</strong>
+                    <h3 class="mb-0">{{object.title}}</h3>
+                    <div class="mb-1 text-muted">{{object.date_create|date:'j E'}}</div>
+                    <p class="mb-auto">{{object.body}}</p>
+                    <a href="{% url 'blog:view' object.pk%}" class="stretched-link">Продолжить чтение</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <img class="p-1" style="width:200px; height:250px; border: 2px solid black;"
+                         src="/media/{{object.preview}}">
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,356 @@
+{% extends 'mailing/base.html' %}}
+
+
+{% block content%}
+
+
+<div class="container">
+    <div class="row justify-content-center">
+
+        <div class="row">
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-header p-3 pt-2">
+                        <div class="text-end pt-1">
+                            <p class="text-sm mb-0 text-capitalize">
+                                <ya-tr-span data-type="trSpan">Рассылок всего</ya-tr-span>
+                            </p>
+                            <h4 class="mb-0">
+                                <ya-tr-span>{{qty_mailing_all}}</ya-tr-span>
+                            </h4>
+                        </div>
+                    </div>
+                    <hr class="dark horizontal my-0">
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-header p-3 pt-2">
+                        <div class="text-end pt-1">
+                            <p class="text-sm mb-0 text-capitalize">Активных рассылок</p>
+                            <h4 class="mb-0">{{activ_mailing}}</h4>
+                        </div>
+                    </div>
+                    <hr class="dark horizontal my-0">
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-header p-3 pt-2">
+                        <div class="text-end pt-1">
+                            <p class="text-sm mb-0 text-capitalize">
+                                <ya-tr-span data-index="45-0" data-translated="true" data-source-lang="en"
+                                            data-target-lang="ru"
+                                            data-value="New Clients" data-translation="Новые клиенты" data-ch="0"
+                                            data-type="trSpan">Уникальных клиентов
+                                </ya-tr-span>
+                            </p>
+                            <h4 class="mb-0">{{qty_client}}</h4>
+                        </div>
+                    </div>
+                    <hr class="dark horizontal my-0">
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="card">
+                    <div class="card-header p-3 pt-2">
+                        <div class="text-end pt-1">
+                            <p class="text-sm mb-0 text-capitalize">
+                                <ya-tr-span>Рассылки {{user}}</ya-tr-span>
+                            </p>
+                            <h4 class="mb-0">{{qty_mailing}}</h4>
+                        </div>
+                    </div>
+                    <hr class="dark horizontal my-0">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-6 py-3">
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">Заголовок </h4>
+                <p>Соображения высшего порядка, а также рамки и место обучения кадров позволяет оценить значение
+                    соответствующих условий активизации. Разнообразный и богатый опыт рамки и место обучения кадров
+                    способствует повышению актуальности модели развития! Соображения высшего порядка, а также дальнейшее
+                    развитие различных форм деятельности позволяет оценить значение модели развития!
+                </p>
+                <hr>
+                <h4 class="alert-heading">Количество уникальных клиентов для рассылок: </h4>
+            </div>
+
+
+            <div class="card radius-10 w-100">
+                <div class="card-body" style="position: relative;">
+                    <div class="d-flex align-items-center">
+                        <h6 class="mb-0">
+                            <ya-tr-span style="visibility: initial !important;">Статистика рассылок</ya-tr-span>
+                        </h6>
+
+                    </div>
+                    <div id="chart7" class="" style="min-height: 300.7px;">
+                        <div id="apexchartsiuhywz47" class="apexcharts-canvas apexchartsiuhywz47 apexcharts-theme-light"
+                             style="width: 476px; height: 300.7px;">
+                            <svg id="SvgjsSvg1869" width="476" height="300.7" xmlns="http://www.w3.org/2000/svg"
+                                 version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                 xmlns:svgjs="http://svgjs.com/svgjs" class="apexcharts-svg" xmlns:data="ApexChartsNS"
+                                 transform="translate(0, 0)" style="background: transparent;">
+                                <g id="SvgjsG1871" class="apexcharts-inner apexcharts-graphical"
+                                   transform="translate(101, 0)">
+                                    <defs id="SvgjsDefs1870">
+                                        <clipPath id="gridRectMaskiuhywz47">
+                                            <rect id="SvgjsRect1873" width="282" height="300" x="-3" y="-1" rx="0"
+                                                  ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0"
+                                                  fill="#fff"></rect>
+                                        </clipPath>
+                                        <clipPath id="gridRectMarkerMaskiuhywz47">
+                                            <rect id="SvgjsRect1874" width="280" height="302" x="-2" y="-2" rx="0"
+                                                  ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0"
+                                                  fill="#fff"></rect>
+                                        </clipPath>
+                                        <linearGradient id="SvgjsLinearGradient1880" x1="0" y1="1" x2="1" y2="1">
+                                            <stop id="SvgjsStop1881" stop-opacity="1" stop-color="rgba(229,209,255,1)"
+                                                  offset="0"></stop>
+                                            <stop id="SvgjsStop1882" stop-opacity="1" stop-color="rgba(137,50,255,1)"
+                                                  offset="1"></stop>
+                                            <stop id="SvgjsStop1883" stop-opacity="1" stop-color="rgba(137,50,255,1)"
+                                                  offset="1"></stop>
+                                        </linearGradient>
+                                        <filter id="SvgjsFilter1887" filterUnits="userSpaceOnUse" width="200%"
+                                                height="200%" x="-50%" y="-50%">
+                                            <feFlood id="SvgjsFeFlood1888" flood-color="rgba(0, 169, 255, 0.85)"
+                                                     flood-opacity="0.65" result="SvgjsFeFlood1888Out"
+                                                     in="SourceGraphic"></feFlood>
+                                            <feComposite id="SvgjsFeComposite1889" in="SvgjsFeFlood1888Out"
+                                                         in2="SourceAlpha" operator="in"
+                                                         result="SvgjsFeComposite1889Out"></feComposite>
+                                            <feOffset id="SvgjsFeOffset1890" dx="0" dy="3" result="SvgjsFeOffset1890Out"
+                                                      in="SvgjsFeComposite1889Out"></feOffset>
+                                            <feGaussianBlur id="SvgjsFeGaussianBlur1891" stdDeviation="4 "
+                                                            result="SvgjsFeGaussianBlur1891Out"
+                                                            in="SvgjsFeOffset1890Out"></feGaussianBlur>
+                                            <feMerge id="SvgjsFeMerge1892" result="SvgjsFeMerge1892Out"
+                                                     in="SourceGraphic">
+                                                <feMergeNode id="SvgjsFeMergeNode1893"
+                                                             in="SvgjsFeGaussianBlur1891Out"></feMergeNode>
+                                                <feMergeNode id="SvgjsFeMergeNode1894"
+                                                             in="[object Arguments]"></feMergeNode>
+                                            </feMerge>
+                                            <feBlend id="SvgjsFeBlend1895" in="SourceGraphic" in2="SvgjsFeMerge1892Out"
+                                                     mode="normal" result="SvgjsFeBlend1895Out"></feBlend>
+                                        </filter>
+                                        <linearGradient id="SvgjsLinearGradient1900" x1="0" y1="1" x2="1" y2="1">
+                                            <stop id="SvgjsStop1901" stop-opacity="1" stop-color="rgba(137,50,255,1)"
+                                                  offset="0"></stop>
+                                            <stop id="SvgjsStop1902" stop-opacity="1" stop-color="rgba(137,50,255,1)"
+                                                  offset="1"></stop>
+                                            <stop id="SvgjsStop1903" stop-opacity="1" stop-color="rgba(137,50,255,1)"
+                                                  offset="1"></stop>
+                                        </linearGradient>
+                                    </defs>
+                                    <g id="SvgjsG1876" class="apexcharts-radialbar">
+                                        <g id="SvgjsG1877">
+                                            <g id="SvgjsG1878" class="apexcharts-tracks">
+                                                <g id="SvgjsG1879" class="apexcharts-radialbar-track apexcharts-track"
+                                                   rel="1">
+                                                    <path id="apexcharts-radialbarTrack-0"
+                                                          d="M 138 30.539024390243895 A 118.4609756097561 118.4609756097561 0 1 1 137.97932465950979 30.539026194507727"
+                                                          fill="none" fill-opacity="1" stroke="rgba(229,209,255,0.85)"
+                                                          stroke-opacity="1" stroke-linecap="round"
+                                                          stroke-width="9.33751219512195" stroke-dasharray="0"
+                                                          class="apexcharts-radialbar-area"
+                                                          data:pathOrig="M 138 30.539024390243895 A 118.4609756097561 118.4609756097561 0 1 1 137.97932465950979 30.539026194507727"></path>
+                                                </g>
+                                            </g>
+                                            <g id="SvgjsG1885">
+
+
+                                                <g id="SvgjsG1899" class="apexcharts-series apexcharts-radial-series"
+                                                   seriesName="TotalxTraffic" rel="1" data:realIndex="0">
+                                                    <path id="SvgjsPath1904"
+                                                          d="M 138 30.539024390243895 A 118.4609756097561 118.4609756097561 0 1 1 21.71548616373269 126.39658025257707"
+                                                          fill="none"
+                                                          fill-opacity="0.85"
+                                                          stroke="url(#SvgjsLinearGradient1900)"
+                                                          stroke-opacity="1"
+                                                          stroke-linecap="round"
+                                                          stroke-width="13.93658536585366"
+                                                          stroke-dasharray="0"
+                                                          class="apexcharts-radialbar-area apexcharts-radialbar-slice-0"
+                                                          data:angle="281" data:value="78" index="0" j="0"
+                                                          data:pathOrig="M 138 30.539024390243895 A 118.4609756097561 118.4609756097561 0 1 1 21.71548616373269 126.39658025257707"></path>
+                                                </g>
+
+
+                                                <circle id="SvgjsCircle1886" r="113.79221951219513" cx="138" cy="149"
+                                                        class="apexcharts-radialbar-hollow" fill="transparent"
+                                                        filter="url(#SvgjsFilter1887)"></circle>
+                                                <g id="SvgjsG1896" class="apexcharts-datalabels-group"
+                                                   transform="translate(0, 0) scale(1)" style="opacity: 1;">
+
+                                                    <text id="SvgjsText1897" font-family="Helvetica, Arial, sans-serif"
+                                                          x="138" y="129" text-anchor="middle" dominant-baseline="auto"
+                                                          font-size="16px" font-weight="400" fill="#212529"
+                                                          class="apexcharts-text apexcharts-datalabel-label"
+                                                          style="font-family: Helvetica, Arial, sans-serif;">Общий
+                                                        процент
+                                                    </text>
+                                                    <text id="SvgjsText1898" font-family="Helvetica, Arial, sans-serif"
+                                                          x="138" y="175" text-anchor="middle" dominant-baseline="auto"
+                                                          font-size="35px" font-weight="400" fill="#212529"
+                                                          class="apexcharts-text apexcharts-datalabel-value"
+                                                          style="font-family: Helvetica, Arial, sans-serif;">{{LogsMailing_result}}%
+                                                    </text>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </g>
+                                    <line id="SvgjsLine1905" x1="0" y1="0" x2="276" y2="0" stroke="#b6b6b6"
+                                          stroke-dasharray="0" stroke-width="1" class="apexcharts-ycrosshairs"></line>
+                                    <line id="SvgjsLine1906" x1="0" y1="0" x2="276" y2="0" stroke-dasharray="0"
+                                          stroke-width="0" class="apexcharts-ycrosshairs-hidden"></line>
+                                </g>
+                                <g id="SvgjsG1872" class="apexcharts-annotations"></g>
+                            </svg>
+                            <div class="apexcharts-legend"></div>
+                        </div>
+                    </div>
+
+
+                    <div class="traffic-widget">
+                        <div class="progress-wrapper mb-3">
+                            <p class="mb-1">
+                                <ya-tr-span style="visibility: initial !important;">Успешно отправленные письма
+                                </ya-tr-span>
+                                <span class="float-end"><ya-tr-span
+                                        style="visibility: initial !important;">{{LogsMailing_success}}</ya-tr-span></span>
+                            </p>
+                            <div class="progress rounded-0" style="height: 8px;">
+                                <div class="progress-bar bg-pink" role="progressbar" style="width: 65%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="progress-wrapper mb-0">
+                            <p class="mb-1">
+                                <ya-tr-span style="visibility: initial !important;">Возникла ошибка отправки
+                                </ya-tr-span>
+                                <span class="float-end"><ya-tr-span
+                                        style="visibility: initial !important;">{{LogsMailing_error}}</ya-tr-span></span>
+                            </p>
+                            <div class="progress rounded-0" style="height: 8px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 50%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div class="col-6 py-3">
+            <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
+                            aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
+                </div>
+                <div class="carousel-inner">
+                    {% for object in photo_blog %}
+                    <div class="carousel-item active" data-bs-interval="10000">
+
+
+                        <div class="hover-effect-btn">
+                            <img src="/media/{{object.preview}}" class="d-block w-100" alt="...">
+                            <div class="overlay"></div>
+                            <div class="button"><a href="{% url 'blog:view' object.pk%}">Перейти к статье</a></div>
+
+
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5 class="title">{{object.title}}</h5>
+                                <p>{{object.body}}</p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                        data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Предыдущий</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                        data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Следующий</span>
+                </button>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<style>
+    .hover-effect-btn {
+      position: relative;
+      width: 100%;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5); /* Настройка цвета и прозрачности для блока с заголовком */
+      transition: background 0.5s ease;
+    }
+    .hover-effect-btn:hover .overlay {
+      display: block;
+      background: rgba(0, 0, 0, 0.9); /* Настройка цвета и прозрачности для блока с заголовком при наведении */
+    }
+    .title {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 25%; /* Отступ сверху */
+      font-size: 1.900em; /* Размер текста заголовка */
+      text-align: center;
+      text-transform: uppercase; /* Заглавные буквы */
+      color: white; /* Цвет заголовка */
+      z-index: 1;
+      transition: top .5s ease;
+    }
+    .hover-effect-btn:hover .title {
+      top: 10%; /* Отступ сверху при наведении */
+    }
+    .button {
+      position: absolute;
+      width: 100%;
+      left:0;
+      top: 65%; /* Отступ сверху */
+      text-align: center;
+      opacity: 0;
+      transition: opacity .35s ease;
+    }
+    .button a {
+      padding: 15px 40px; /* Отступ */
+      text-align: center;
+      background: #ff921e; /* Цвет кнопки */
+      color: white; /* Цвет текста */
+      border: 1px solid white; /* Ширина, стиль и цвет границы */
+      z-index: 1;
+    }
+    .hover-effect-btn:hover .button {
+      opacity: 1;
+    }
+</style>
+
+{% endblock %}

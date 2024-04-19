@@ -1,83 +1,155 @@
 {% extends 'mailing/base.html' %}}
-
+{% load static%}
 
 {% block content%}
 
 
 <div class="container py-3">
     <div class="row row-cols-1 row-cols-md-4 mb-3 text-center">
-        {% for object in object_list %}
-        <div class="col mb-4 box-shadow rounded-3">
-
-            <div class="card h-100 ">
-
-                <div class="card-header py-3 ">
-                    <h4 class="my-0 font-weight-normal">
-                        <div class="circle circle-lg ">
-
-                            Пользователь
-
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">
+                    <style>
+                        .data {
+                        color: rgb(0, 0, 0);
+                        font-size:35px;
+                        text-shadow: rgb(204, 204, 204) 0px 1px 0px, rgb(201, 201, 201) 0px 2px 0px, rgb(187, 187, 187) 0px 3px 0px, rgb(185, 185, 185) 0px 4px 0px, rgb(170, 170, 170) 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 6px 1px, rgba(0, 0, 0, 0.1) 0px 0px 5px, rgba(0, 0, 0, 0.3) 0px 1px 3px, rgba(0, 0, 0, 0.15) 0px 3px 5px, rgba(0, 0, 0, 0.2) 0px 5px 10px, rgba(0, 0, 0, 0.2) 0px 10px 10px, rgba(0, 0, 0, 0.1) 0px 20px 20px;
+                        }
+                    </style>
+                    <div class="data">{% now "j F Y" %}</div>
+                </th>
+                <th scope="col">
+                    <div class="watch">
+                        <script type="text/javascript"
+                                src="https://bootstraptema.ru/plugins/2015/x-tag/x-tag-core.min.js"></script>
+                        <style>
+                            x-clock {
+                            color: rgb(0, 0, 0);
+                            font-size:35px;
+                            text-shadow: rgb(204, 204, 204) 0px 1px 0px, rgb(201, 201, 201) 0px 2px 0px, rgb(187, 187, 187) 0px 3px 0px, rgb(185, 185, 185) 0px 4px 0px, rgb(170, 170, 170) 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 6px 1px, rgba(0, 0, 0, 0.1) 0px 0px 5px, rgba(0, 0, 0, 0.3) 0px 1px 3px, rgba(0, 0, 0, 0.15) 0px 3px 5px, rgba(0, 0, 0, 0.2) 0px 5px 10px, rgba(0, 0, 0, 0.2) 0px 10px 10px, rgba(0, 0, 0, 0.1) 0px 20px 20px;
+                            }
+                        </style>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-6 col-lg-offset-3">
+                                    <div class="text-center">
+                                        <x-clock></x-clock>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </h4>
-                </div>
 
-                <div class="card-body">
-                    <div class="card-body-header">
-                        <h1 class="card-title pricing-card-title">{{object.status}}</h1>
+                        <script>
+                            xtag.register('x-clock', {
+                             lifecycle: {
+                             created: function(){
+                             this.start();
+                             }
+                             },
+                             methods: {
+                             start: function(){
+                             this.update();
+                             this.xtag.interval = setInterval(this.update.bind(this), 1000);
+                             },
+                             stop: function(){
+                             this.xtag.interval = clearInterval(this.xtag.interval);
+                             },
+                             update: function(){
+                             this.textContent = new Date().toLocaleTimeString();
+                             }
+                             },
+                             events: {
+                             tap: function(){
+                             if (this.xtag.interval) this.stop();
+                             else this.start();
+                             }
+                             }
+                            });
+                        </script>
                     </div>
+                </th>
+            </tr>
+            </thead>
 
-                    <div class="card-body-body ">
-                        <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                            <li>Периодичность: {{object.frequency}}</li>
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Дата и время окончания рассылки</th>
+                <th scope="col">Время рассылки</th>
+                <th scope="col">Отправка</th>
+                <th scope="col">Клиент</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
 
 
-                        </ul>
-                    </div>
+            {% for object in object_list %}
+            {% if perms.mailing.view_mailing or request.user == object.owner %}
+            <tr>
+                <th scope="row">{{object.pk}}</th>
+                <td class=" text-center">{{object.end_datatime_mailing}}</td>
+                <td>{{object.time_mailing}}</td>
+                <td>{{object.frequency}}</td>
+                <td>
+                    {% for object in object.сlient_key.all %}
+                    {{object}} <br>
+                    {% endfor%}
+                </td>
 
-                    <div class="col align-self-end">
-                        <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                            <hr>
-                            {% for version in item.version_set.all %}
-                            {% if version.flag_current_version %}
-                            <li>- Актуальная версия: <b>sdfsedfsd</b>
+                <td style="width:100px">
+                    {% if object.status == 'Создана' %}
+                    <img src="/media/status_active.png" style="max-width: 30%; height: auto;">
+                    {% elif object.status == 'Запущена'%}
+                    <img src="/media/status_work.png" style="max-width: 30%; height: auto;">
+                    {% elif object.status == 'Завершена'%}
+                    <img src="/media/status_inactive.png" style="max-width: 30%; height: auto;">
+                    {% endif %}
+                </td>
+
+                <td class="py-2">
+                    <div class="container">
+
+                        <div class="row">
+                            <div class="col m-0 p-0">
+                                {% if perms.mailing.change_mailing or object.owner == request.user %}
+                                <a href="{% url 'mailing:update' object.pk %}"
+                                   class="btn btn-outline-secondary btn-sm">Изменить</a>
                                 {% endif %}
-                                {% endfor %}
-                            </li>
-                            <li>- Какой-то текст ыы.</li>
-                        </ul>
+                            </div>
+                            <div class="col m-0 p-0">
+                                {% if perms.mailing.delete_mailing or object.owner == request.user %}
+                                <a href="{% url 'mailing:delete' object.pk %}" class="btn-basket btn btn-sm">
+                                    <img src="/media/delete.svg" style="width: 100%; height: 1.2em">
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </td>
+            </tr>
 
-
-                <div class="col-auto py-3">
-                    <a href="#"
-                       class="btn btn-outline-primary btn-sm">Просмотр</a>
-
-
-                    {% if item.owner == request.user %}
-                    <a href="#"
-                       class="{% url 'mailing:update' object.pk %}">Изменить</a>
-                    {% elif perms.catalog.set_is_published %}
-                    <a href="{% url 'mailing:update' object.pk %}"
-                       class="btn btn-outline-secondary btn-sm">Изменить</a>
-                    {% endif %}
-
-                    {% if perms.catalog.delete_product %}
-                    <a href="{% url 'mailing:delete' object.pk %}" class="btn btn-outline-danger btn-sm">Удалить</a>
-                    {% endif %}
-                </div>
-
-
-                <div class="card-footer">
-                    <small class="text-muted">{{object.time_mailing}}</small>
-                </div>
-            </div>
-        </div>
-
-        {% endfor %}
+            {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 
+
+<style>
+    .btn-basket{
+         border: 1px solid black;
+    }
+     .btn-basket:hover{
+      border: 1px solid black;
+            -webkit-filter: sepia(1) hue-rotate(320deg) saturate(10);
+            filter: sepia(1) hue-rotate(320deg) saturate(10);
+    }
+</style>
 
 {% endblock %}
 

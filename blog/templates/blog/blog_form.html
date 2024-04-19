@@ -1,0 +1,28 @@
+{% extends 'mailing/base.html' %}
+
+
+{% block content%}
+<div class="container py-3">
+
+    <div class="col-12">
+
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            {% if object.slug%}
+                            <button type="submit" class="btn btn-success">Изменить</button>
+                            {% else %}
+                            <button type="submit" class="btn btn-success">Создать</button>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

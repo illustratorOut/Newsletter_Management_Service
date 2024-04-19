@@ -1,0 +1,64 @@
+{% extends 'mailing/base.html' %}}
+
+{% block content%}
+<div class="container py-3">
+    <div class="row row-cols-1 row-cols-md-4 mb-3 text-center">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Пользователь</th>
+                <th scope="col">Статус</th>
+            </tr>
+            </thead>
+            {% for object in object_list %}
+            <tbody>
+            <tr>
+                <td>
+                    {{ object.email }}
+                </td>
+
+                {% if 'Менеджер' in object.groups.first.name %}
+                <td class="sorting_1">
+                    <span class="badge badge-pill badge-primary"
+                          style="color:#fff;background-color: #007bff">Moder</span>
+                </td>
+                {% elif object.is_superuser %}
+                <td class="sorting_1">
+                    <span class="badge badge-pill badge-primary"
+                          style="color:#fff;background-color: #dc3545">Admin</span>
+                </td>
+                {% else %}
+                <td class="sorting_1">
+                    <span class="badge badge-pill badge-primary" style="color:#fff;background-color: #dc3545"></span>
+                </td>
+                {% endif %}
+                <td>
+
+
+                    <div class="form-check form-switch">
+                        {% if object.is_superuser %}
+                        <div onclick="location.href='{% url 'users:change_task_status' object.pk True %}'">
+                            <input class="form-check-input" type="checkbox" checked disabled>
+                        </div>
+                        {% elif object.is_active %}
+                        <div onclick="location.href='{% url 'users:change_task_status' object.pk False %}'">
+                            <input class="form-check-input" type="checkbox" checked>
+                        </div>
+                        {% else %}
+                        <div onclick="location.href='{% url 'users:change_task_status' object.pk True %}'">
+                            <input class="form-check-input" type="checkbox">
+                        </div>
+                        {%endif%}
+                        <label class="form-check-label">Деактивировать пользователя?</label>
+                    </div>
+
+
+                </td>
+            </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+{% endblock %}

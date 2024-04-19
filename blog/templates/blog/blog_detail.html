@@ -1,0 +1,42 @@
+{% extends 'mailing/base.html' %}
+
+
+{% block content%}
+<div class="col-6 mx-auto">
+    <div class="row">
+        <div class="card">
+
+            <div class="card-header text-center">
+                <h5 class="card-title">{{ object.title }}</h5>
+            </div>
+
+            <div class="row align-items-start">
+                <div class="col">
+                    <div class="card mb-3 mt-3 rounded  d-block" style="max-width: 500px;">
+                        <img src="/media/{{ object.preview }}" class="img-fluid"/>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card mb-3 mt-3 rounded">
+                        <h5 class="card-title text-center">Описание</h5>
+                    </div>
+
+                    <div class="alert alert-success " role="alert">
+                        <p class="mb-0"> {{ object.body }}</p>
+                        <hr>
+                        <b>Просмотры: {{ object.count_views }}</b>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card-footer text-muted text-center">
+                <p class="card-text"><small class="text-muted">{{object.date_create}}</small></p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
