@@ -1,5 +1,5 @@
 <H1 style="text-align: center"> 
-Сервис рассылок <span style='color: red;'>New-Maling</span>
+Сервис рассылок <span style='color: red;'>New-Mailing</span>
 </H1>
 
 ---
